@@ -92,7 +92,7 @@ export class AsyncCacheProvider extends React.Component<Props> {
     constructor(props: Props) {
         super(props);
         this.asyncCache = new AsyncCache(
-            (asyncCache: AsyncCache, responses: Responses) => {
+            (responses: Responses) => {
                 return new Promise((resolve) => {
                     this.setState({ responses }, resolve);
                 });

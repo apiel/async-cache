@@ -25,7 +25,7 @@ export declare class AsyncCache {
     state: {
         responses: Responses;
     };
-    constructor(updateState: (asyncCache: AsyncCache, responses: Responses) => any);
+    constructor(updateState: (responses: Responses, asyncCache?: AsyncCache) => any);
     call: Call;
     update: Update;
     cache: Cache;

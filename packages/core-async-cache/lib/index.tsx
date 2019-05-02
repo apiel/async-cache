@@ -39,7 +39,7 @@ export class AsyncCache {
     };
 
     constructor(
-        private updateState: (asyncCache: AsyncCache, responses: Responses) => any,
+        private updateState: (responses: Responses, asyncCache?: AsyncCache) => any,
     ) {}
 
     public call: Call = async (fn: Fn, ...args: any) => {
@@ -78,7 +78,7 @@ export class AsyncCache {
         const { responses } = this.state;
         responses[id] = { name, args, response, requestTime, error };
         // console.log('setResponse', id, responses[id]);
-        return this.updateState(this, responses);
+        return this.updateState(responses, this);
     }
 
     private setRequestTime = async (

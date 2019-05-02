@@ -21,8 +21,8 @@ export {
 } from 'core-async-cache';
 
 export const cache = new AsyncCache(
-    (asyncCache: AsyncCache, responses: Responses) => {
-        Vue.set(asyncCache.state.responses, 'responses', responses);
+    (responses: Responses, asyncCache: AsyncCache | undefined) => {
+        Vue.set(asyncCache!.state.responses, 'responses', responses);
     },
 );
 
