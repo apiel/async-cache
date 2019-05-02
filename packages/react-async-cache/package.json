@@ -7,7 +7,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/apiel/react-async-cache"
+    "url": "https://github.com/apiel/async-cache"
   },
   "scripts": {
     "build-link": "yarn build && rm -rf example/node_modules/react-async-cache/dist/* && cp dist/* example/node_modules/react-async-cache/dist/",
