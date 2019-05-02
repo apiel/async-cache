@@ -1,5 +1,7 @@
 import md5 from 'md5';
 
+// use something else than JSON.stringify (should we use immutable instead? After request are as frequent than rendering component, so JSON might be fine as well)
+
 export interface Res {
     name: string;
     args: any;

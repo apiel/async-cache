@@ -17,6 +17,7 @@
     "lint": "tslint -p tsconfig.json -c tslint.json"
   },
   "dependencies": {
+    "core-async-cache": "^0.4.2",
     "md5": "^2.2.1",
     "typescript": "^3.4.1"
   },
