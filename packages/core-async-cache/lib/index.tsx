@@ -31,7 +31,7 @@ export function getId(fn: Fn, args: any): string {
     return md5(`${fn.name}::${JSON.stringify(args)}`);
 }
 
-class AsyncCache {
+export class AsyncCache {
     public state: { responses: Responses } = {
         responses: {},
     };

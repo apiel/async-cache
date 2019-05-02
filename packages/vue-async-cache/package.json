@@ -1,0 +1,28 @@
+{
+  "name": "vue-async-cache",
+  "version": "0.4.0",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "author": "Alexandre Piel <alexandre.piel@gmail.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/apiel/async-cache"
+  },
+  "scripts": {
+    "prepublish": "yarn build",
+    "prebuild": "rm -rf dist/",
+    "build": "tsc -p tsconfig.json",
+    "lint": "tslint -p tsconfig.json -c tslint.json"
+  },
+  "dependencies": {
+    "core-async-cache": "^0.4.0",
+    "md5": "^2.2.1",
+    "typescript": "^3.4.1",
+    "vue": "^2.6.10"
+  },
+  "devDependencies": {
+    "@types/md5": "^2.1.33",
+    "rimraf": "^2.6.3"
+  }
+}

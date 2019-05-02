@@ -20,3 +20,17 @@ export interface UseAsyncCacheReturn<T = any> {
     error: any;
 }
 export declare function getId(fn: Fn, args: any): string;
+export declare class AsyncCache {
+    private updateState;
+    state: {
+        responses: Responses;
+    };
+    constructor(updateState: (asyncCache: AsyncCache, responses: Responses) => any);
+    call: Call;
+    update: Update;
+    cache: Cache;
+    private setResponse;
+    private setRequestTime;
+    private setError;
+    private isAlreadyRequesting;
+}
