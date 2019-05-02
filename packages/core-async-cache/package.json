@@ -1,0 +1,31 @@
+{
+  "name": "core-async-cache",
+  "version": "0.0.1",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "author": "Alexandre Piel <alexandre.piel@gmail.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/apiel/react-async-cache"
+  },
+  "scripts": {
+    "build-link": "yarn build && rm -rf example/node_modules/react-async-cache/dist/* && cp dist/* example/node_modules/react-async-cache/dist/",
+    "prepublish": "yarn build",
+    "prebuild": "rm -rf dist/",
+    "build": "tsc -p tsconfig.json",
+    "lint": "tslint -p tsconfig.json -c tslint.json"
+  },
+  "dependencies": {
+    "md5": "^2.2.1",
+    "typescript": "^3.4.1"
+  },
+  "devDependencies": {
+    "@types/md5": "^2.1.33",
+    "@types/react": "16.8.10",
+    "@types/react-dom": "16.8.3",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
+    "rimraf": "^2.6.3"
+  }
+}
