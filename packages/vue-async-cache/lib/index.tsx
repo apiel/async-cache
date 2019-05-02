@@ -9,6 +9,17 @@ import {
     Cache,
 } from 'core-async-cache';
 
+export {
+    getId,
+    AsyncCache,
+    Responses,
+    Res,
+    Call,
+    Fn,
+    Update,
+    Cache,
+} from 'core-async-cache';
+
 export const cache = new AsyncCache(
     (asyncCache: AsyncCache, responses: Responses) => {
         Vue.set(asyncCache.state.responses, 'responses', responses);
