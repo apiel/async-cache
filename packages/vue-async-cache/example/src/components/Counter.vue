@@ -7,14 +7,9 @@
 <script lang="ts">
 import {
   Component,
-  Prop,
   Vue,
-  Inject,
-  Emit,
-  Watch
 } from "vue-property-decorator";
 import { api } from "../mockapi";
-// import { asyncCache, Responses, Res, useAsyncCacheWatch } from "../asyncCache";
 import { asyncCache, Responses, Res, useAsyncCacheWatch } from "vue-async-cache";
 
 @Component
@@ -24,10 +19,9 @@ export default class Counter extends Vue {
   get count() {
     return this.cacheWatch.getResponse();
   }
+
+  async mounted() {
+    this.cacheWatch.load();
+  }
 }
 </script>
-
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-
-</style>

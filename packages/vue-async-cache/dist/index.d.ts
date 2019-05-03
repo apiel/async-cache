@@ -10,4 +10,5 @@ export declare function useAsyncCacheWatch(fn: Fn, ...args: any): {
     cache: Cache<any>;
     load: () => Promise<string>;
     getResponse: () => any;
+    getError: () => any;
 };

@@ -14,7 +14,7 @@ export const ErrorExample = () => {
   return (
     <div style={errorStyle}>
       {!response && !error && <p>loading...</p>}
-      {error && <p><b>Some error handling example:</b> {error.toString()} </p>}
+      {error && <p><b>Some error handling example:</b> {error} </p>}
     </div>
   );
 }

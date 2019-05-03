@@ -29,6 +29,7 @@ export function useAsyncCacheWatch(fn: Fn, ...args: any) {
     const id = getId(fn, args);
     const load = () => asyncCache.call(fn, ...args);
     const getResponse = () => asyncCache.state.responses[id] && asyncCache.state.responses[id].response;
+    const getError = () => asyncCache.state.responses[id] && asyncCache.state.responses[id].error;
 
-    return { load, getResponse, ...asyncCache };
+    return { load, getResponse, getError, ...asyncCache };
 }

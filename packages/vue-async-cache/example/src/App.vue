@@ -4,6 +4,7 @@
     <Counter />
     <Counter />
     <SetCounter />
+    <ErrorExample />
   </div>
 </template>
 
@@ -11,11 +12,13 @@
 import { Component, Vue, Provide } from "vue-property-decorator";
 import Counter from "./components/Counter.vue";
 import SetCounter from "./components/SetCounter.vue";
+import ErrorExample from "./components/ErrorExample.vue";
 
 @Component({
   components: {
     Counter,
-    SetCounter
+    SetCounter,
+    ErrorExample,
   }
 })
 export default class App extends Vue {}
