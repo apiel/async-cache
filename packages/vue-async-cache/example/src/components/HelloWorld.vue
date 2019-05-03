@@ -37,7 +37,8 @@ export default class HelloWorld extends Vue {
   async loadCache() {
     // cache.call(api, "/yo");
     // cache.update()
-      const response = await api('/counter', 'POST', { value: Math.random() });
+      const count = cache.cache(api, '/counter');
+      const response = await api('/counter', 'POST', { value: count + 1 });
       // Update cache
       await cache.update(response, api, '/counter');
   }
