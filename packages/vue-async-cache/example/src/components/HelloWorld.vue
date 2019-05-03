@@ -2,7 +2,7 @@
   <div class="hello">
     <p>Hello world for test</p>
     <p>cacheState {{cacheState.responses}}</p>
-    <p>Responses {{responses}}</p>
+    <p>Response {{response}}</p>
     <button @click="addNumber()">Add new number</button>
     <button @click="loadCache()">Load</button>
   </div>
@@ -21,10 +21,11 @@ import {
 import { api } from "../mockapi";
 import { store } from "../store";
 import { cache, getId, Responses, Res } from "../asyncCache";
+// import { cache, getId, Responses, Res } from "vue-async-cache";
 
 @Component
 export default class HelloWorld extends Vue {
-  private responses!: Responses;
+  private cacheState!: any;
   private id!: string;
   // private res!: Res | null;
 
@@ -37,13 +38,12 @@ export default class HelloWorld extends Vue {
   }
 
   get response() {
-    return this.responses[this.id];
+    return this.cacheState.responses[this.id] && this.cacheState.responses[this.id].response;
   }
 
   data() {
     return {
       id: null,
-      responses: cache.state.responses,
       cacheState: cache.state,
       state: cache.state,
       // res: null,

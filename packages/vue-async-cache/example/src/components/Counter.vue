@@ -15,6 +15,7 @@ import {
 } from "vue-property-decorator";
 import { api } from "../mockapi";
 import { cache, Responses, Res } from "../asyncCache";
+// import { cache, Responses, Res } from "vue-async-cache";
 
 @Component
 export default class Counter extends Vue {
