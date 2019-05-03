@@ -4,5 +4,5 @@
     "packages/react-async-cache/example",
     "packages/vue-async-cache/example"
   ],
-  "version": "0.5.1"
+  "version": "0.6.0"
 }
