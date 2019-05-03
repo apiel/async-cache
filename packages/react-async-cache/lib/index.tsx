@@ -25,14 +25,6 @@ const initialState = {
     responses: {} as Responses,
 };
 
-export interface UseAsyncCacheReturn<T = any> {
-    call: Call;
-    response: T;
-    update: Update;
-    cache: Cache;
-    error: any;
-};
-
 export const AsyncCacheContext = createContext({
     call: async (fn: Fn, ...args: any) => '',
     update: async (response: any, fn: Fn, ...args: any) => { },
@@ -74,16 +66,33 @@ export class AsyncCacheProvider extends React.Component<Props> {
     }
 }
 
+export interface UseAsyncCacheReturn<T = any> {
+    call: Call;
+    update: Update;
+    cache: Cache;
+};
+
 export function useAsyncCache<T = any>(): UseAsyncCacheReturn<T> {
+    return useContext(AsyncCacheContext);
+}
+
+export interface UseAsyncCacheWatchReturn<T = any> extends UseAsyncCacheReturn<T> {
+    load: () => Promise<string>;
+    response: T;
+    error: any;
+};
+
+// we need to find a way to rerender only if necessary
+export function useAsyncCacheWatch<T = any>(fn: Fn, ...args: any): UseAsyncCacheWatchReturn<T> {
     const { call, responses, ...rest } = useContext(AsyncCacheContext);
-    const [id, setId] = useState();
     const [response, setResponse] = useState();
     const [error, setError] = useState();
-    const myCall = async (fn: Fn, ...args: any) => {
-        setId(getId(fn, args));
+
+    const load = async() => {
         return call(fn, ...args);
-    };
+    }
     useEffect(() => {
+        const id = getId(fn, args);
         const storeResponse: Res = responses[id];
         if (storeResponse) {
             if (!response || JSON.stringify(response) !== JSON.stringify(storeResponse.response)) {
@@ -94,20 +103,17 @@ export function useAsyncCache<T = any>(): UseAsyncCacheReturn<T> {
             }
         }
     }); // , [responses]
-    return { call: myCall, response, error, ...rest };
+    return { load, call, response, error, ...rest };
 }
 
-export function useAsyncCacheEffect<T = any>(deps: readonly any[], fn: Fn, ...args: any): UseAsyncCacheReturn<T> & { load: () => Promise<any> };
+export function useAsyncCacheEffect<T = any>(deps: readonly any[], fn: Fn, ...args: any): UseAsyncCacheReturn<T>;
 export function useAsyncCacheEffect<T = any>(fn: Fn, ...args: any): UseAsyncCacheReturn<T> & { load: () => Promise<any> };
 export function useAsyncCacheEffect<T = any>(...params: any): UseAsyncCacheReturn<T> & { load: () => Promise<any> } {
     let [deps, fn, ...args] = typeof (params[0]) === 'function' ? [[], ...params] : params;
 
-    const { call, ...rest } = useAsyncCache();
-    const load = async () => {
-        return call(fn, ...args);
-    }
+    const { load, ...rest } = useAsyncCacheWatch(fn, ...args);
     React.useEffect(() => {
         load();
     }, deps);
-    return { load, call, ...rest };
+    return { load, ...rest };
 }

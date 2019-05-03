@@ -1,5 +1,5 @@
 import React from 'react';
-import { useAsyncCache } from 'react-async-cache';
+import { useAsyncCacheWatch } from 'react-async-cache';
 import { api } from './mockapi';
 
 const errorStyle = {
@@ -7,9 +7,9 @@ const errorStyle = {
 }
 
 export const ErrorExample = () => {
-  const { call, response, error } = useAsyncCache();
+  const { load, response, error } = useAsyncCacheWatch(api, '/no-route');
   React.useEffect(() => {
-      call(api, '/no-route');
+      load();
   });
   return (
     <div style={errorStyle}>

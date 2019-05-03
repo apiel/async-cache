@@ -93,7 +93,6 @@ export { getId, AsyncCache, } from 'core-async-cache';
 var initialState = {
     responses: {},
 };
-;
 export var AsyncCacheContext = createContext(__assign({ call: function (fn) {
         var args = [];
         for (var _i = 1; _i < arguments.length; _i++) {
@@ -116,55 +115,6 @@ export var AsyncCacheContext = createContext(__assign({ call: function (fn) {
             args[_i - 1] = arguments[_i];
         }
     } }, initialState));
-export function useAsyncCache() {
-    var _this = this;
-    var _a = useContext(AsyncCacheContext), call = _a.call, responses = _a.responses, rest = __rest(_a, ["call", "responses"]);
-    var _b = __read(useState(), 2), id = _b[0], setId = _b[1];
-    var _c = __read(useState(), 2), response = _c[0], setResponse = _c[1];
-    var _d = __read(useState(), 2), error = _d[0], setError = _d[1];
-    var myCall = function (fn) {
-        var args = [];
-        for (var _i = 1; _i < arguments.length; _i++) {
-            args[_i - 1] = arguments[_i];
-        }
-        return __awaiter(_this, void 0, void 0, function () {
-            return __generator(this, function (_a) {
-                setId(getId(fn, args));
-                return [2 /*return*/, call.apply(void 0, __spread([fn], args))];
-            });
-        });
-    };
-    useEffect(function () {
-        var storeResponse = responses[id];
-        if (storeResponse) {
-            if (!response || JSON.stringify(response) !== JSON.stringify(storeResponse.response)) {
-                setResponse(storeResponse.response);
-            }
-            if (!error || JSON.stringify(error) !== JSON.stringify(storeResponse.error)) {
-                setError(storeResponse.error);
-            }
-        }
-    }); // , [responses]
-    return __assign({ call: myCall, response: response, error: error }, rest);
-}
-export function useAsyncCacheEffect() {
-    var _this = this;
-    var params = [];
-    for (var _i = 0; _i < arguments.length; _i++) {
-        params[_i] = arguments[_i];
-    }
-    var _a = __read(typeof (params[0]) === 'function' ? __spread([[]], params) : params), deps = _a[0], fn = _a[1], args = _a.slice(2);
-    var _b = useAsyncCache(), call = _b.call, rest = __rest(_b, ["call"]);
-    var load = function () { return __awaiter(_this, void 0, void 0, function () {
-        return __generator(this, function (_a) {
-            return [2 /*return*/, call.apply(void 0, __spread([fn], args))];
-        });
-    }); };
-    React.useEffect(function () {
-        load();
-    }, deps);
-    return __assign({ load: load, call: call }, rest);
-}
 var AsyncCacheProvider = /** @class */ (function (_super) {
     __extends(AsyncCacheProvider, _super);
     function AsyncCacheProvider(props) {
@@ -183,4 +133,50 @@ var AsyncCacheProvider = /** @class */ (function (_super) {
     return AsyncCacheProvider;
 }(React.Component));
 export { AsyncCacheProvider };
-//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiaW5kZXguanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyIuLi9saWIvaW5kZXgudHN4Il0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiI7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7QUFBQSxpQkFpSEE7QUFqSEEsT0FBTyxLQUFLLEVBQUUsRUFBRSxhQUFhLEVBQUUsVUFBVSxFQUFFLFFBQVEsRUFBRSxTQUFTLEVBQUUsTUFBTSxPQUFPLENBQUM7QUFDOUUsT0FBTyxFQUNILEtBQUssRUFDTCxVQUFVLEdBT2IsTUFBTSxrQkFBa0IsQ0FBQztBQUUxQixPQUFPLEVBQ0gsS0FBSyxFQUNMLFVBQVUsR0FPYixNQUFNLGtCQUFrQixDQUFDO0FBRTFCLElBQU0sWUFBWSxHQUFHO0lBQ2pCLFNBQVMsRUFBRSxFQUFlO0NBQzdCLENBQUM7QUFRRCxDQUFDO0FBRUYsTUFBTSxDQUFDLElBQU0saUJBQWlCLEdBQUcsYUFBYSxZQUMxQyxJQUFJLEVBQUUsVUFBTyxFQUFNO1FBQUUsY0FBWTthQUFaLFVBQVksRUFBWixxQkFBWSxFQUFaLElBQVk7WUFBWiw2QkFBWTs7O1lBQUssc0JBQUEsRUFBRSxFQUFBOztLQUFBLEVBQ3hDLE1BQU0sRUFBRSxVQUFPLFFBQWEsRUFBRSxFQUFNO1FBQUUsY0FBWTthQUFaLFVBQVksRUFBWixxQkFBWSxFQUFaLElBQVk7WUFBWiw2QkFBWTs7Ozs7S0FBUSxFQUMxRCxLQUFLLEVBQUUsVUFBQyxFQUFNO1FBQUUsY0FBWTthQUFaLFVBQVksRUFBWixxQkFBWSxFQUFaLElBQVk7WUFBWiw2QkFBWTs7SUFBWSxDQUFDLElBQ3RDLFlBQVksRUFDakIsQ0FBQztBQUVILE1BQU0sVUFBVSxhQUFhO0lBQTdCLGlCQXFCQztJQXBCRyxJQUFNLGtDQUE0RCxFQUExRCxjQUFJLEVBQUUsd0JBQVMsRUFBRSx3Q0FBeUMsQ0FBQztJQUM3RCxJ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
+;
+export function useAsyncCache() {
+    return useContext(AsyncCacheContext);
+}
+;
+// we need to find a way to rerender only if necessary
+export function useAsyncCacheWatch(fn) {
+    var _this = this;
+    var args = [];
+    for (var _i = 1; _i < arguments.length; _i++) {
+        args[_i - 1] = arguments[_i];
+    }
+    var _a = useContext(AsyncCacheContext), call = _a.call, responses = _a.responses, rest = __rest(_a, ["call", "responses"]);
+    var _b = __read(useState(), 2), response = _b[0], setResponse = _b[1];
+    var _c = __read(useState(), 2), error = _c[0], setError = _c[1];
+    var load = function () { return __awaiter(_this, void 0, void 0, function () {
+        return __generator(this, function (_a) {
+            return [2 /*return*/, call.apply(void 0, __spread([fn], args))];
+        });
+    }); };
+    useEffect(function () {
+        var id = getId(fn, args);
+        var storeResponse = responses[id];
+        if (storeResponse) {
+            if (!response || JSON.stringify(response) !== JSON.stringify(storeResponse.response)) {
+                setResponse(storeResponse.response);
+            }
+            if (!error || JSON.stringify(error) !== JSON.stringify(storeResponse.error)) {
+                setError(storeResponse.error);
+            }
+        }
+    }); // , [responses]
+    return __assign({ load: load, call: call, response: response, error: error }, rest);
+}
+export function useAsyncCacheEffect() {
+    var params = [];
+    for (var _i = 0; _i < arguments.length; _i++) {
+        params[_i] = arguments[_i];
+    }
+    var _a = __read(typeof (params[0]) === 'function' ? __spread([[]], params) : params), deps = _a[0], fn = _a[1], args = _a.slice(2);
+    var _b = useAsyncCacheWatch.apply(void 0, __spread([fn], args)), load = _b.load, rest = __rest(_b, ["load"]);
+    React.useEffect(function () {
+        load();
+    }, deps);
+    return __assign({ load: load }, rest);
+}
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiaW5kZXguanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyIuLi9saWIvaW5kZXgudHN4Il0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiI7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7QUFBQSxpQkF1SEE7QUF2SEEsT0FBTyxLQUFLLEVBQUUsRUFBRSxhQUFhLEVBQUUsVUFBVSxFQUFFLFFBQVEsRUFBRSxTQUFTLEVBQUUsTUFBTSxPQUFPLENBQUM7QUFDOUUsT0FBTyxFQUNILEtBQUssRUFDTCxVQUFVLEdBT2IsTUFBTSxrQkFBa0IsQ0FBQztBQUUxQixPQUFPLEVBQ0gsS0FBSyxFQUNMLFVBQVUsR0FPYixNQUFNLGtCQUFrQixDQUFDO0FBRTFCLElBQU0sWUFBWSxHQUFHO0lBQ2pCLFNBQVMsRUFBRSxFQUFlO0NBQzdCLENBQUM7QUFFRixNQUFNLENBQUMsSUFBTSxpQkFBaUIsR0FBRyxhQUFhLFlBQzFDLElBQUksRUFBRSxVQUFPLEVBQU07UUFBRSxjQUFZO2FBQVosVUFBWSxFQUFaLHFCQUFZLEVBQVosSUFBWTtZQUFaLDZCQUFZOzs7WUFBSyxzQkFBQSxFQUFFLEVBQUE7O0tBQUEsRUFDeEMsTUFBTSxFQUFFLFVBQU8sUUFBYSxFQUFFLEVBQU07UUFBRSxjQUFZO2FBQVosVUFBWSxFQUFaLHFCQUFZLEVBQVosSUFBWTtZQUFaLDZCQUFZOzs7OztLQUFRLEVBQzFELEtBQUssRUFBRSxVQUFDLEVBQU07UUFBRSxjQUFZO2FBQVosVUFBWSxFQUFaLHFCQUFZLEVBQVosSUFBWTtZQUFaLDZCQUFZOztJQUFZLENBQUMsSUFDdEMsWUFBWSxFQUNqQixDQUFDO0FBTUg7SUFBd0Msc0NBQXNCO0lBTzFELDRCQUFZLEtBQVk7UUFBeEIsWUFDSSxrQkFBTSxLQUFLLENBQUMsU0FRZjtRQWZELFdBQUssZ0JBQ0UsWUFBWSxFQUNqQjtRQU1FLEtBQUksQ0FBQyxVQUFVLEdBQUcsSUFBSSxVQUFVLENBQzVCLFVBQUMsU0FBb0I7WUFDakIsT0FBTyxJQUFJLE9BQU8sQ0FBQyxVQUFDLE9BQU87Z0JBQ3ZCLEtBQUksQ0FBQyxRQUFRLENBQUMsRUFBRSxTQUFTLFdBQUEsRUFBRSxFQUFFLE9BQU8sQ0FBQyxDQUFDO1lBQzFDLENBQUMsQ0FBQyxDQUFDO1FBQ1AsQ0FBQyxDQUNKLENBQUM7O0lBQ04sQ0FBQztJQUVELG1DQUFNLEdBQU47UUFDSSxPQUFPLENBQ0gsb0JBQUMsaUJBQWlCLENBQUMsUUFBUSxJQUFDLEtBQUssYUFDN0IsU0FBUyxFQUFFLElBQUksQ0FBQyxLQUFLLENBQUMsU0FBUyxJQUM1QixJQUFJLENBQUMsVUFBVSxLQUVqQixJQUFJLENBQUMsS0FBSyxDQUFDLFFBQVEsQ0FDSyxDQUNoQyxDQUFDO0lBQ04sQ0FBQztJQUNMLHlCQUFDO0FBQUQsQ0FBQyxBQTVCRCxDQUF3QyxLQUFLLENBQUMsU0FBUyxHQTRCdEQ7O0FBTUEsQ0FBQztBQUVGLE1BQU0sVUFBVSxhQUFhO0lBQ3pCLE9BQU8sVUFBVSxDQUFDLGlCQUFpQixDQUFDLENBQUM7QUFDekMsQ0FBQztBQU1BLENBQUM7QUFFRixzREFBc0Q7QUFDdEQsTUFBTSxVQUFVLGtCQUFrQixDQUFVLEVBQU07SUFBbEQsaUJBcUJDO0lBckJtRCxjQUFZO1NBQVosVUFBWSxFQUFaLHFCQUFZLEVBQVosSUFBWTtRQUFaLDZCQUFZOztJQUM1RCxJQUFNLGtDQUE0RCxFQUExRCxjQUFJLEVBQUUsd0JBQVMsRUFBRSx3Q0FBeUMsQ0FBQztJQUM3RCxJQUFBLDBCQUFvQyxFQUFuQyxnQkFBUSxFQUFFLG1CQUF5QixDQUFDO0lBQ3JDLElBQUEsMEJBQThCLEVBQTdCLGFBQUssRUFBRSxnQkFBc0IsQ0FBQztJQUVyQyxJQUFNLElBQUksR0FBRzs7WUFDVCxzQkFBTyxJQUFJLHlCQUFDLEVBQUUsR0FBSyxJQUFJLElBQUU7O1NBQzVCLENBQUE7SUFDRCxTQUFTLENBQUM7UUFDTixJQUFNLEVBQUUsR0FBRyxLQUFLLENBQUMsRUFBRSxFQUFFLElBQUksQ0FBQyxDQUFDO1FBQzNCLElBQU0sYUFBYSxHQUFRLFNBQVMsQ0FBQyxFQUFFLENBQUMsQ0FBQztRQUN6QyxJQUFJLGFBQWEsRUFBRTtZQUNmLElBQUksQ0FBQyxRQUFRLElBQUksSUFBSSxDQUFDLFNBQVMsQ0FBQyxRQUFRLENBQUMsS0FBSyxJQUFJLENBQUMsU0FBUyxDQUFDLGFBQWEsQ0FBQyxRQUFRLENBQUMsRUFBRTtnQkFDbEYsV0FBVyxDQUFDLGFBQWEsQ0FBQyxRQUFRLENBQUMsQ0FBQzthQUN2QztZQUNELElBQUksQ0FBQyxLQUFLLElBQUksSUFBSSxDQUFDLFNBQVMsQ0FBQyxLQUFLLENBQUMsS0FBSyxJQUFJLENBQUMsU0FBUyxDQUFDLGFBQWEsQ0FBQyxLQUFLLENBQUMsRUFBRTtnQkFDekUsUUFBUSxDQUFDLGFBQWEsQ0FBQyxLQUFLLENBQUMsQ0FBQzthQUNqQztTQUNKO0lBQ0wsQ0FBQyxDQUFDLENBQUMsQ0FBQyxnQkFBZ0I7SUFDcEIsa0JBQVMsSUFBSSxNQUFBLEVBQUUsSUFBSSxNQUFBLEVBQUUsUUFBUSxVQUFBLEVBQUUsS0FBSyxPQUFBLElBQUssSUFBSSxFQUFHO0FBQ3BELENBQUM7QUFJRCxNQUFNLFVBQVUsbUJBQW1CO0lBQVUsZ0JBQWM7U0FBZCxVQUFjLEVBQWQscUJBQWMsRUFBZCxJQUFjO1FBQWQsMkJBQWM7O0lBQ25ELElBQUEsZ0ZBQWtGLEVBQWpGLFlBQUksRUFBRSxVQUFFLEVBQUUsa0JBQXVFLENBQUM7SUFFdkYsSUFBTSwyREFBbUQsRUFBakQsY0FBSSxFQUFFLDJCQUEyQyxDQUFDO0lBQzFELEtBQUssQ0FBQyxTQUFTLENBQUM7UUFDWixJQUFJLEVBQUUsQ0FBQztJQUNYLENBQUMsRUFBRSxJQUFJLENBQUMsQ0FBQztJQUNULGtCQUFTLElBQUksTUFBQSxJQUFLLElBQUksRUFBRztBQUM3QixDQUFDIn0=
