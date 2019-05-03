@@ -40,6 +40,40 @@ export const AsyncCacheContext = createContext({
     ...initialState,
 });
 
+interface Props {
+    children: React.ReactNode
+}
+
+export class AsyncCacheProvider extends React.Component<Props> {
+    state = {
+        ...initialState,
+    };
+
+    asyncCache: AsyncCache;
+
+    constructor(props: Props) {
+        super(props);
+        this.asyncCache = new AsyncCache(
+            (responses: Responses) => {
+                return new Promise((resolve) => {
+                    this.setState({ responses }, resolve);
+                });
+            },
+        );
+    }
+
+    render() {
+        return (
+            <AsyncCacheContext.Provider value={{
+                responses: this.state.responses,
+                ...this.asyncCache,
+            }}>
+                {this.props.children}
+            </AsyncCacheContext.Provider>
+        );
+    }
+}
+
 export function useAsyncCache<T = any>(): UseAsyncCacheReturn<T> {
     const { call, responses, ...rest } = useContext(AsyncCacheContext);
     const [id, setId] = useState();
@@ -76,52 +110,4 @@ export function useAsyncCacheEffect<T = any>(...params: any): UseAsyncCacheRetur
         load();
     }, deps);
     return { load, call, ...rest };
-}
-
-interface Props {
-    children: React.ReactNode
-}
-
-export class AsyncCacheProvider extends React.Component<Props> {
-    state = {
-        ...initialState,
-    };
-
-    asyncCache: AsyncCache;
-
-    constructor(props: Props) {
-        super(props);
-        this.asyncCache = new AsyncCache(
-            (responses: Responses) => {
-                return new Promise((resolve) => {
-                    this.setState({ responses }, resolve);
-                });
-            },
-        );
-    }
-
-    call: Call = (fn: Fn, ...args: any) => {
-        return this.asyncCache.call(fn, ...args);
-    }
-
-    update: Update = (response: any, fn: Fn, ...args: any) => {
-        return this.asyncCache.update(response, fn, ...args);
-    }
-
-    cache: Cache = (fn: Fn, ...args: any) => {
-        return this.asyncCache.cache(fn, ...args);
-    }
-
-    render() {
-        return (
-            <AsyncCacheContext.Provider value={{
-                call: this.call,
-                responses: this.state.responses,
-                update: this.update,
-                cache: this.cache,
-            }}>
-                {this.props.children}
-            </AsyncCacheContext.Provider>
-        );
-    }
 }

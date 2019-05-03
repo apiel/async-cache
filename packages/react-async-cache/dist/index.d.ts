@@ -30,8 +30,5 @@ export declare class AsyncCacheProvider extends React.Component<Props> {
     };
     asyncCache: AsyncCache;
     constructor(props: Props);
-    call: Call;
-    update: Update;
-    cache: Cache;
     render(): JSX.Element;
 }

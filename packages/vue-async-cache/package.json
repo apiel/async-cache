@@ -10,7 +10,7 @@
     "url": "https://github.com/apiel/async-cache"
   },
   "scripts": {
-    "prepublish": "yarn build",
+    "prepublishOnly": "yarn build",
     "prebuild": "rm -rf dist/",
     "build": "tsc -p tsconfig.json",
     "lint": "tslint -p tsconfig.json -c tslint.json"

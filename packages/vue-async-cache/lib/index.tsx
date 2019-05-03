@@ -26,6 +26,7 @@ export const cache = new AsyncCache(
     },
 );
 
+// need to make this work
 export class UseAsyncCache { // tslint:disable-line
     public state: { id: string, response: any } = {
         id: '',
@@ -47,6 +48,9 @@ export class UseAsyncCache { // tslint:disable-line
     }
 
     get response() {
+        console.log('get response', cache.state.responses[this.state.id]);
         return cache.state.responses[this.state.id];
+            // ? cache.state.responses[this.state.id].response
+            // : null;
     }
 }

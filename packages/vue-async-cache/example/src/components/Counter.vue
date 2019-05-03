@@ -1,8 +1,6 @@
 <template>
   <div class="hello">
-    <p>A {{responses['dbe5d477a168e97237d469f8a06ce137']}}</p>
-    <p>E {{response}}</p>
-    <p>R {{res}}</p>
+    <p>Counter: {{response}}</p>
   </div>
 </template>
 
@@ -15,36 +13,26 @@ import {
   Emit,
   Watch
 } from "vue-property-decorator";
-// import { Responses, Call } from '../App.vue';
 import { api } from "../mockapi";
-import { cache, Responses, Res, UseAsyncCache } from "vue-async-cache";
+import { cache, Responses, Res } from "vue-async-cache";
 
 @Component
-export default class HelloWorld extends Vue {
+export default class Counter extends Vue {
   private responses!: Responses;
   private id!: string;
-  // private res!: Res | null;
-  private useAsyncCache = new UseAsyncCache();
 
   get response() {
-    return this.responses[this.id];
-  }
-
-  get res() {
-    return this.useAsyncCache.response;
+    return this.responses[this.id] ? this.responses[this.id].response : null;
   }
 
   data() {
     return {
       id: null,
       responses: cache.state.responses,
-      // res: null,
     };
   }
 
   async mounted() {
-    await this.useAsyncCache.call(api, "/counter");
-
     this.id = await cache.call(api, "/counter");
   }
 }
