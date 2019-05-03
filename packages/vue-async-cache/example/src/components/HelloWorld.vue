@@ -1,7 +1,7 @@
 <template>
   <div class="hello">
     <p>Hello world for test</p>
-    <p>cacheState {{cacheState.responses}}</p>
+    <!-- <p>cacheState {{cacheState.responses}}</p> -->
     <p>Response {{response}}</p>
     <button @click="addNumber()">Add new number</button>
     <button @click="loadCache()">Load</button>
@@ -20,11 +20,12 @@ import {
 // import { Responses, Call } from '../App.vue';
 import { api } from "../mockapi";
 import { store } from "../store";
-import { cache, getId, Responses, Res } from "../asyncCache";
+import { cache, getId, Responses, Res, useAsyncCacheWatch } from "../asyncCache";
 // import { cache, getId, Responses, Res } from "vue-async-cache";
 
 @Component
 export default class HelloWorld extends Vue {
+  private cacheWatch = useAsyncCacheWatch(api, "/counter");
   private cacheState!: any;
   private id!: string;
   // private res!: Res | null;
@@ -33,25 +34,30 @@ export default class HelloWorld extends Vue {
     store.addNumber();
   }
 
-  loadCache() {
-    cache.call(api, "/yo");
+  async loadCache() {
+    // cache.call(api, "/yo");
+    // cache.update()
+      const response = await api('/counter', 'POST', { value: Math.random() });
+      // Update cache
+      await cache.update(response, api, '/counter');
   }
 
   get response() {
-    return this.cacheState.responses[this.id] && this.cacheState.responses[this.id].response;
+    // return this.cacheState.responses[this.id] && this.cacheState.responses[this.id].response;
+    return this.cacheWatch.getResponse();
   }
 
   data() {
     return {
       id: null,
-      cacheState: cache.state,
-      state: cache.state,
+      // cacheState: cache.state,
       // res: null,
     };
   }
 
   async mounted() {
-    this.id = await cache.call(api, "/counter");
+    // this.id = await cache.call(api, "/counter");
+    this.id = await this.cacheWatch.load();
   }
 }
 </script>

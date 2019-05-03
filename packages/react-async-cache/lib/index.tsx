@@ -88,7 +88,7 @@ export function useAsyncCacheWatch<T = any>(fn: Fn, ...args: any): UseAsyncCache
     const [response, setResponse] = useState();
     const [error, setError] = useState();
 
-    const load = async() => {
+    const load = async() => { // can make arrow fn
         return call(fn, ...args);
     }
     useEffect(() => {

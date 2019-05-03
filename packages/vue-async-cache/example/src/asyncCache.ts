@@ -86,15 +86,15 @@ export class AsyncCache {
         return id;
     }
 
-    // public update: Update = async (response: any, fn: Fn, ...args: any) => {
-    //     const id = getId(fn, args);
-    //     await this.setResponse(id, fn, args, Date.now(), response, null);
-    // }
+    public update: Update = async (response: any, fn: Fn, ...args: any) => {
+        const id = getId(fn, args);
+        await this.setResponse(id, fn, args, Date.now(), response, null);
+    }
 
-    // public cache: Cache = (fn: Fn, ...args: any) => {
-    //     const id = getId(fn, args);
-    //     return this.state.responses[id].response;
-    // }
+    public cache: Cache = (fn: Fn, ...args: any) => {
+        const id = getId(fn, args);
+        return this.state.responses[id].response;
+    }
 
     private setRequestTime = async (
         id: string,
@@ -126,3 +126,11 @@ export class AsyncCache {
 }
 
 export const cache = new AsyncCache();
+
+export function useAsyncCacheWatch(fn: Fn, ...args: any) {
+    const id = getId(fn, args);
+    const load = () => cache.call(fn, ...args);
+    const getResponse = () => cache.state.responses[id] && cache.state.responses[id].response;
+
+    return { load, getResponse };
+}
