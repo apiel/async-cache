@@ -20,8 +20,8 @@ import {
 // import { Responses, Call } from '../App.vue';
 import { api } from "../mockapi";
 import { store } from "../store";
-import { cache, getId, Responses, Res, useAsyncCacheWatch } from "../asyncCache";
-// import { cache, getId, Responses, Res } from "vue-async-cache";
+// import { cache, getId, Responses, Res, useAsyncCacheWatch } from "../asyncCache";
+import { asyncCache, getId, Responses, Res, useAsyncCacheWatch } from "vue-async-cache";
 
 @Component
 export default class HelloWorld extends Vue {
@@ -37,10 +37,10 @@ export default class HelloWorld extends Vue {
   async loadCache() {
     // cache.call(api, "/yo");
     // cache.update()
-      const count = cache.cache(api, '/counter');
+      const count = asyncCache.cache(api, '/counter');
       const response = await api('/counter', 'POST', { value: count + 1 });
       // Update cache
-      await cache.update(response, api, '/counter');
+      await asyncCache.update(response, api, '/counter');
   }
 
   get response() {

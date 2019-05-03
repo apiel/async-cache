@@ -1,4 +1,3 @@
-import Vue from 'vue';
 import {
     getId,
     AsyncCache,
@@ -20,39 +19,16 @@ export {
     Cache,
 } from 'core-async-cache';
 
-export const cache = new AsyncCache(
+export const asyncCache = new AsyncCache(
     (responses: Responses, asyncCache?: AsyncCache) => {
-        // Vue.set(asyncCache!.state, 'responses', responses);
-        // Vue.set(asyncCache!.state.responses, 'dbe5d477a168e97237d469f8a06ce137', responses['dbe5d477a168e97237d469f8a06ce137']);
         asyncCache!.state.responses = { ...asyncCache!.state.responses, ...responses};
     },
 );
 
-// need to make this work
-export class UseAsyncCache { // tslint:disable-line
-    public state: { id: string, response: any } = {
-        id: '',
-        response: null,
-    };
+export function useAsyncCacheWatch(fn: Fn, ...args: any) {
+    const id = getId(fn, args);
+    const load = () => asyncCache.call(fn, ...args);
+    const getResponse = () => asyncCache.state.responses[id] && asyncCache.state.responses[id].response;
 
-    public call: Call = async (fn: Fn, ...args: any) => {
-        const id = getId(fn, args);
-        Vue.set(this.state, 'id', id);
-        return cache.call(fn, ...args);
-    }
-
-    public update: Update = async (response: any, fn: Fn, ...args: any) => {
-        return cache.update(response, fn, ...args);
-    }
-
-    public cache: Cache = (fn: Fn, ...args: any) => {
-        return cache.cache(fn, ...args);
-    }
-
-    get response() {
-        console.log('get response', cache.state.responses[this.state.id]);
-        return cache.state.responses[this.state.id];
-            // ? cache.state.responses[this.state.id].response
-            // : null;
-    }
+    return { load, getResponse };
 }

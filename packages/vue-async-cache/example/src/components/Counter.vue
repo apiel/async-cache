@@ -14,8 +14,8 @@ import {
   Watch
 } from "vue-property-decorator";
 import { api } from "../mockapi";
-import { cache, Responses, Res, useAsyncCacheWatch } from "../asyncCache";
-// import { cache, Responses, Res } from "vue-async-cache";
+// import { asyncCache, Responses, Res, useAsyncCacheWatch } from "../asyncCache";
+import { asyncCache, Responses, Res, useAsyncCacheWatch } from "vue-async-cache";
 
 @Component
 export default class Counter extends Vue {
@@ -31,7 +31,7 @@ export default class Counter extends Vue {
   data() {
     return {
       id: null,
-      cacheState: cache.state,
+      cacheState: asyncCache.state,
     };
   }
 

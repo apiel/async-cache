@@ -125,12 +125,12 @@ export class AsyncCache {
     }
 }
 
-export const cache = new AsyncCache();
+export const asyncCache = new AsyncCache();
 
 export function useAsyncCacheWatch(fn: Fn, ...args: any) {
     const id = getId(fn, args);
-    const load = () => cache.call(fn, ...args);
-    const getResponse = () => cache.state.responses[id] && cache.state.responses[id].response;
+    const load = () => asyncCache.call(fn, ...args);
+    const getResponse = () => asyncCache.state.responses[id] && asyncCache.state.responses[id].response;
 
     return { load, getResponse };
 }
