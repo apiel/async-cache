@@ -106,9 +106,9 @@ export function useAsyncCacheWatch<T = any>(fn: Fn, ...args: any): UseAsyncCache
     return { load, call, response, error, ...rest };
 }
 
-export function useAsyncCacheEffect<T = any>(deps: readonly any[], fn: Fn, ...args: any): UseAsyncCacheReturn<T>;
-export function useAsyncCacheEffect<T = any>(fn: Fn, ...args: any): UseAsyncCacheReturn<T> & { load: () => Promise<any> };
-export function useAsyncCacheEffect<T = any>(...params: any): UseAsyncCacheReturn<T> & { load: () => Promise<any> } {
+export function useAsyncCacheEffect<T = any>(deps: readonly any[], fn: Fn, ...args: any): UseAsyncCacheWatchReturn<T>;
+export function useAsyncCacheEffect<T = any>(fn: Fn, ...args: any): UseAsyncCacheWatchReturn<T>;
+export function useAsyncCacheEffect<T = any>(...params: any): UseAsyncCacheWatchReturn<T> {
     let [deps, fn, ...args] = typeof (params[0]) === 'function' ? [[], ...params] : params;
 
     const { load, ...rest } = useAsyncCacheWatch(fn, ...args);
