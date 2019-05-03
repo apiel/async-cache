@@ -1,6 +1,6 @@
 <template>
   <div class="counter">
-    <p>Counter: {{responses}}</p>
+    <p>Counter: {{count}}</p>
   </div>
 </template>
 
@@ -20,23 +20,9 @@ import { asyncCache, Responses, Res, useAsyncCacheWatch } from "vue-async-cache"
 @Component
 export default class Counter extends Vue {
   private cacheWatch = useAsyncCacheWatch(api, "/counter");
-  private cacheState!: any;
-  private id!: string;
 
-  get responses() {
-    // return this.cacheState.responses;
+  get count() {
     return this.cacheWatch.getResponse();
-  }
-
-  data() {
-    return {
-      id: null,
-      cacheState: asyncCache.state,
-    };
-  }
-
-  async mounted() {
-    // this.id = await cache.call(api, "/counter");
   }
 }
 </script>
