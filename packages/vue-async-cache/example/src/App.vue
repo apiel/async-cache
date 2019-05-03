@@ -3,16 +3,19 @@
     <img alt="Vue logo" src="./assets/logo.png">
     <Counter />
     <Counter />
+    <HelloWorld />
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue, Provide } from "vue-property-decorator";
 import Counter from "./components/Counter.vue";
+import HelloWorld from "./components/HelloWorld.vue";
 
 @Component({
   components: {
-    Counter
+    Counter,
+    HelloWorld
   }
 })
 export default class App extends Vue {}

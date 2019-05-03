@@ -22,7 +22,9 @@ export {
 
 export const cache = new AsyncCache(
     (responses: Responses, asyncCache?: AsyncCache) => {
-        Vue.set(asyncCache!.state.responses, 'responses', responses);
+        // Vue.set(asyncCache!.state, 'responses', responses);
+        // Vue.set(asyncCache!.state.responses, 'dbe5d477a168e97237d469f8a06ce137', responses['dbe5d477a168e97237d469f8a06ce137']);
+        asyncCache!.state.responses = { ...asyncCache!.state.responses, ...responses};
     },
 );
 

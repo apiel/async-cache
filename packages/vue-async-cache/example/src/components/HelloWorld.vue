@@ -1,8 +1,10 @@
 <template>
   <div class="hello">
-    <p>A {{responses['dbe5d477a168e97237d469f8a06ce137']}}</p>
-    <p>E {{response}}</p>
-    <p>R {{res}}</p>
+    <p>Hello world for test</p>
+    <p>cacheState {{cacheState.responses}}</p>
+    <p>Responses {{responses}}</p>
+    <button @click="addNumber()">Add new number</button>
+    <button @click="loadCache()">Load</button>
   </div>
 </template>
 
@@ -17,34 +19,38 @@ import {
 } from "vue-property-decorator";
 // import { Responses, Call } from '../App.vue';
 import { api } from "../mockapi";
-import { cache, getId, Responses, Res, UseAsyncCache } from "vue-async-cache";
+import { store } from "../store";
+import { cache, getId, Responses, Res } from "../asyncCache";
 
 @Component
 export default class HelloWorld extends Vue {
   private responses!: Responses;
   private id!: string;
   // private res!: Res | null;
-  private useAsyncCache = new UseAsyncCache();
+
+  addNumber() {
+    store.addNumber();
+  }
+
+  loadCache() {
+    cache.call(api, "/yo");
+  }
 
   get response() {
     return this.responses[this.id];
-  }
-
-  get res() {
-    return this.useAsyncCache.response;
   }
 
   data() {
     return {
       id: null,
       responses: cache.state.responses,
+      cacheState: cache.state,
+      state: cache.state,
       // res: null,
     };
   }
 
   async mounted() {
-    await this.useAsyncCache.call(api, "/counter");
-
     this.id = await cache.call(api, "/counter");
   }
 }
@@ -52,18 +58,9 @@ export default class HelloWorld extends Vue {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-h3 {
-  margin: 40px 0 0;
-}
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-a {
-  color: #42b983;
+.hello {
+  border: 1px solid rgb(71, 184, 130);
+  padding: 10px;
+  margin: 10px;
 }
 </style>

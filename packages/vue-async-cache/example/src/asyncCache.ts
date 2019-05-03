@@ -1,6 +1,5 @@
 import md5 from 'md5';
-
-// use something else than JSON.stringify (should we use immutable instead? After request are as frequent than rendering component, so JSON might be fine as well)
+import Vue from 'vue';
 
 export interface Res {
     name: string;
@@ -38,35 +37,11 @@ export class AsyncCache {
         responses: {},
     };
 
-    constructor(
-        private updateState: (responses: Responses, asyncCache?: AsyncCache) => any,
-    ) {}
+    // constructor(
+    //     private updateState: (responses: Responses, asyncCache?: AsyncCache) => any,
+    // ) {}
 
-    public call: Call = async (fn: Fn, ...args: any) => {
-        const id = getId(fn, args);
-        if (!this.isAlreadyRequesting(id)) {
-            const requestTime = await this.setRequestTime(id, fn, args);
-            try {
-                const response = await fn(...args);
-                await this.setResponse(id, fn, args, requestTime, response, null);
-            } catch (error) {
-                this.setError(id, fn, args, error.toString());
-            }
-        }
-        return id;
-    }
-
-    public update: Update = async (response: any, fn: Fn, ...args: any) => {
-        const id = getId(fn, args);
-        await this.setResponse(id, fn, args, Date.now(), response, null);
-    }
-
-    public cache: Cache = (fn: Fn, ...args: any) => {
-        const id = getId(fn, args);
-        return this.state.responses[id].response;
-    }
-
-    private setResponse = (
+    public setResponse = (
         id: string,
         fn: Fn,
         args: any,
@@ -78,8 +53,48 @@ export class AsyncCache {
         const { responses } = this.state;
         responses[id] = { name, args, response, requestTime, error };
         // console.log('setResponse', id, responses[id]);
-        return this.updateState(responses, this);
+        this.state.responses = { ...this.state.responses, ...responses};
+        console.log('this.state.responses', this.state.responses);
     }
+
+    public call: Call = async (fn: Fn, ...args: any) => {
+        // const id = getId(fn, args);
+        // const responses = this.state.responses;
+        // // const requestTime = await this.setRequestTime(id, fn, args);
+        // const requestTime = 0;
+        // const response = await fn(...args);
+        // // // responses[id] = { name: 'api', args: [ '/yo' ], response: 8, requestTime: 0, error: null };
+        // // responses[id] = { name, args, response, requestTime: 0, error: null };
+        // // this.state.responses = {
+        // //     ...this.state.responses,
+        // //     ...responses,
+        // // };
+        // this.setResponse(id, fn, args, requestTime, response, null);
+
+        const id = getId(fn, args);
+        if (!this.isAlreadyRequesting(id)) {
+            console.log('call function cause not isAlreadyRequesting');
+            const requestTime = await this.setRequestTime(id, fn, args);
+            // const requestTime = 0;
+            try {
+                const response = await fn(...args);
+                await this.setResponse(id, fn, args, requestTime, response, null);
+            } catch (error) {
+                this.setError(id, fn, args, error.toString());
+            }
+        }
+        return id;
+    }
+
+    // public update: Update = async (response: any, fn: Fn, ...args: any) => {
+    //     const id = getId(fn, args);
+    //     await this.setResponse(id, fn, args, Date.now(), response, null);
+    // }
+
+    // public cache: Cache = (fn: Fn, ...args: any) => {
+    //     const id = getId(fn, args);
+    //     return this.state.responses[id].response;
+    // }
 
     private setRequestTime = async (
         id: string,
@@ -93,7 +108,7 @@ export class AsyncCache {
         return requestTime;
     }
 
-    private setError = async (
+    private setError = (
         id: string,
         fn: Fn,
         args: any,
@@ -101,7 +116,7 @@ export class AsyncCache {
     ) => {
         const data = this.state.responses[id];
         const response = data ? data.response : null;
-        await this.setResponse(id, fn, args, data.requestTime, response, error);
+        this.setResponse(id, fn, args, data.requestTime, response, error);
     }
 
     private isAlreadyRequesting = (id: string): boolean => {
@@ -109,3 +124,5 @@ export class AsyncCache {
         return data && (Date.now() - data.requestTime) < 200;
     }
 }
+
+export const cache = new AsyncCache();
