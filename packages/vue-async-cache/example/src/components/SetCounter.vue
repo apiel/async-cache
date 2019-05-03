@@ -11,7 +11,7 @@ import {
   Vue,
 } from "vue-property-decorator";
 import { api } from "../mockapi";
-import { asyncCache, getId, Responses, Res, useAsyncCacheWatch } from "vue-async-cache";
+import { asyncCache, useAsyncCacheWatch } from "vue-async-cache";
 
 @Component
 export default class SetCounter extends Vue {
