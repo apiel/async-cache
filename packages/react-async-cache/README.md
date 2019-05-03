@@ -31,15 +31,15 @@ See full example at [here](https://github.com/apiel/react-async-cache/tree/maste
 counter.js
 ```jsx
 import React from 'react';
-import { useAsyncCache } from 'react-async-cache';
+import { useAsyncCacheWatch } from 'react-async-cache';
 import { api } from './mockapi';
 
 export const Counter = () => {
-    const { call, response } = useAsyncCache();
+    const { load, response } = useAsyncCacheWatch(api, '/counter');
     React.useEffect(() => {
         // call api to get current counter value and cache it
         // it will avoid unnecessary simultanous call
-        call(api, '/counter');
+        load();
     });
     return (
         <div>
@@ -116,32 +116,31 @@ ReactDOM.render((
 
 ### useAsyncCache
 
-Then use the hook `useAsyncCache` in the components. This hook return an object of 5 properties: `call`, `update`, `response`, `error` and `cache`.
+`useAsyncCache` hook is mainly to interact with the cache. This hook return an object of 4 properties: `call`, `update`, `cache` and `responses`.
 
 ```tsx
 import { useAsyncCache } from 'react-async-cache';
 
 export const MyComponent = () => {
-    const { call, response, update } = useAsyncCache();
+    const { call, update, cache } = useAsyncCache();
     ...
 }
 ```
 
-`call` is a function that allow to cache the original function call. The first given parameter to `call` is the function you want to cache. The next parameters are the parameters you would have providen to the function you want to cache.
+`call` is a function that allow to cache the original function call. The first given parameter to `call` is the function you want to cache. The next parameters are the parameters you would have providen to the function you want to cache. `call` will return the `id` of the corresponding response in the cache.
 
 ```tsx
-async call(fn: (...args: any) => Promise<any>, ...args: any)
+async call(fn: (...args: any) => Promise<any>, ...args: any) => Promise<string>
 ```
 
 eg.:
 ```tsx
 await call(getItems);
-await call(getItem, 'id-20', { withComment: true });
+const id = await call(getItem, 'id-20', { withComment: true });
 ```
+> **Note:** in most of the case it is not necessary to use `call` and instead prefer using `load` from `useAsyncCacheWatch` that will take care to observe changes on the response.
 
-`response` is the response received after the function has been called.
-
-`error` is the error received if the function called failed.
+`cache` is a function to access the cache. It work the same way as the `call` function, but it will retrieve the `response` from the cache, instead to call the async function.
 
 `update` is a function that allow to update the cache without to make a call to the server. The first parameter is the new response you want to set. The second parameter is the cached function. The next parameter are the parameters you would have providen to the cached function.
 
@@ -160,17 +159,35 @@ await update({
 }, getItem, 'id-20', { withComment: true });
 ```
 
-`cache` is a function to access the cache. It work the same way as the `call` function, but it will get the `response` from the cache, instead to call the async function.
+`responses` is the actual cache representing all the asynchrone call, error and response. To access the cache prefer using the `cache` function instead.
+
+### useAsyncCacheWatch
+
+`useAsyncCacheWatch` hook is used for watching a specific response, allowing to automatically update the state of a component. This hook return the same attributes as `useAsyncCache` plus 3 extra attributes `load`, `response` and `error`.
+
+To use `useAsyncCacheWatch`, you need to provide some parameters, the first given parameter is the function you want to cache. The next parameters are the parameters you would have providen to the function you want to cache. It is actually exactly the same parameters as for `call` function.
+
+```tsx
+import { useAsyncCacheWatch } from 'react-async-cache';
+
+export const MyComponent = () => {
+    const { load, response, error } = useAsyncCacheWatch(getItem, 'id-20', { withComment: true });
+    ...
+}
+```
+
+`load` is the function to call to run the function you want to cache.
+
+`response` is the response received after the function has been called.
+
+`error` is the error received if the function called failed.
 
 ### useAsyncCacheEffect
 
-`useAsyncCacheEffect` combine `useAsyncCache` with `React.useEffect`. The following code is very recurrent:
+`useAsyncCacheEffect` combine `useAsyncCacheWatch` with `React.useEffect`. The following code is very recurrent:
 
 ```js
-    const { call, response } = useAsyncCache();
-    const load = async() => {
-      await call(someAsyncFunc, someParams);
-    }
+    const { load, response } = useAsyncCacheWatch(someAsyncFunc, someParams);
     React.useEffect(() => {
         load();
     });

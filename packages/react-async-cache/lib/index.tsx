@@ -72,7 +72,7 @@ export interface UseAsyncCacheReturn<T = any> {
     cache: Cache;
 };
 
-export function useAsyncCache<T = any>(): UseAsyncCacheReturn<T> {
+export function useAsyncCache<T = any>(): UseAsyncCacheReturn<T> & { responses: Responses } {
     return useContext(AsyncCacheContext);
 }
 
@@ -84,7 +84,7 @@ export interface UseAsyncCacheWatchReturn<T = any> extends UseAsyncCacheReturn<T
 
 // we need to find a way to rerender only if necessary
 export function useAsyncCacheWatch<T = any>(fn: Fn, ...args: any): UseAsyncCacheWatchReturn<T> {
-    const { call, responses, ...rest } = useContext(AsyncCacheContext);
+    const { call, responses, ...rest } = useAsyncCache<T>();
     const [response, setResponse] = useState();
     const [error, setError] = useState();
 

@@ -23,7 +23,9 @@ export interface UseAsyncCacheReturn<T = any> {
     update: Update;
     cache: Cache;
 }
-export declare function useAsyncCache<T = any>(): UseAsyncCacheReturn<T>;
+export declare function useAsyncCache<T = any>(): UseAsyncCacheReturn<T> & {
+    responses: Responses;
+};
 export interface UseAsyncCacheWatchReturn<T = any> extends UseAsyncCacheReturn<T> {
     load: () => Promise<string>;
     response: T;
