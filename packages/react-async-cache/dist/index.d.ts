@@ -21,13 +21,23 @@ export declare class AsyncCacheProvider extends React.Component<Props> {
 export interface UseAsyncCacheReturn<T = any> {
     call: Call;
     update: Update;
-    cache: Cache;
+    cache: Cache<T>;
 }
+export interface UseAsyncCacheReturnBound<T = any> {
+    call: () => Promise<string>;
+    update: (response: any) => Promise<void>;
+    cache: () => T;
+}
+export declare function useAsyncCache<T = any>(fn: Fn, ...args: any): UseAsyncCacheReturnBound<T> & {
+    responses: Responses;
+};
 export declare function useAsyncCache<T = any>(): UseAsyncCacheReturn<T> & {
     responses: Responses;
 };
-export interface UseAsyncCacheWatchReturn<T = any> extends UseAsyncCacheReturn<T> {
-    load: () => Promise<string>;
+export interface UseAsyncCacheWatchReturn<T = any> {
+    call: () => Promise<string>;
+    update: (response: any) => Promise<void>;
+    cache: () => T;
     response: T;
     error: any;
 }

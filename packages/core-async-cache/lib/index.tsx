@@ -1,7 +1,5 @@
 import md5 from 'md5';
 
-// use something else than JSON.stringify (should we use immutable instead? After request are as frequent than rendering component, so JSON might be fine as well)
-
 export interface Res {
     name: string;
     args: any;
@@ -63,7 +61,7 @@ export class AsyncCache {
 
     public cache: Cache = (fn: Fn, ...args: any) => {
         const id = getId(fn, args);
-        return this.state.responses[id].response;
+        return this.state.responses[id] && this.state.responses[id].response;
     }
 
     private setResponse = (

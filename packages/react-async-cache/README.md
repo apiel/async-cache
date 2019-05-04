@@ -35,11 +35,11 @@ import { useAsyncCacheWatch } from 'react-async-cache';
 import { api } from './mockapi';
 
 export const Counter = () => {
-    const { load, response } = useAsyncCacheWatch(api, '/counter');
+    const { call, response } = useAsyncCacheWatch(api, '/counter');
     React.useEffect(() => {
         // call api to get current counter value and cache it
         // it will avoid unnecessary simultanous call
-        load();
+        call();
     });
     return (
         <div>
@@ -76,20 +76,20 @@ import { useAsyncCache } from 'react-async-cache';
 import { api } from './mockapi';
 
 export const SetCounter = () => {
-    const { update, cache } = useAsyncCache();
+    const { update, cache } = useAsyncCache(api, '/counter');
     const onReset = async () => {
         // Call api to update the counter
         const response = await api('/counter', 'POST', { value: 1 });
         // Update the cache to populate the response to the other component
-        await update(response, api, '/counter');
+        await update(response);
     }
     const onIncrement = async () => {
         // Load count value from cache
-        const count = cache(api, '/counter');
+        const count = cache();
         // Call api
         const response = await api('/counter', 'POST', { value: count + 1 });
         // Update cache
-        await update(response, api, '/counter');
+        await update(response);
     }
     return (
         <div>
@@ -116,33 +116,31 @@ ReactDOM.render((
 
 ### useAsyncCache
 
-`useAsyncCache` hook is mainly to interact with the cache. This hook return an object of 4 properties: `call`, `update`, `cache` and `responses`.
+`useAsyncCache` hook is mainly to interact with the cache. The hook get some parameters, the first given parameter is the function you want to cache. The next parameters are the parameters you would have providen to the function to cache. This hook return an object of 4 properties: `call`, `update`, `cache` and `responses`.
 
 ```tsx
 import { useAsyncCache } from 'react-async-cache';
 
 export const MyComponent = () => {
-    const { call, update, cache } = useAsyncCache();
+    const { call, update, cache } = useAsyncCache(getItem, 'id-20', { withComment: true });
     ...
 }
 ```
 
-`call` is a function that allow to cache the original function call. The first given parameter to `call` is the function you want to cache. The next parameters are the parameters you would have providen to the function you want to cache. `call` will return the `id` of the corresponding response in the cache.
+`call` is a function that allow to cache the async function. `call` will return the `id` of the corresponding response in the cache.
 
 ```tsx
-async call(fn: (...args: any) => Promise<any>, ...args: any) => Promise<string>
+async call() => Promise<string>
 ```
 
 eg.:
 ```tsx
-await call(getItems);
-const id = await call(getItem, 'id-20', { withComment: true });
+const id = await call();
 ```
-> **Note:** in most of the case it is not necessary to use `call` and instead prefer using `load` from `useAsyncCacheWatch` that will take care to observe changes on the response.
 
 `cache` is a function to access the cache. It work the same way as the `call` function, but it will retrieve the `response` from the cache, instead to call the async function.
 
-`update` is a function that allow to update the cache without to make a call to the server. The first parameter is the new response you want to set. The second parameter is the cached function. The next parameter are the parameters you would have providen to the cached function.
+`update` is a function that allow to update the cache without to make a call to the server. The first parameter is the new response you want to set.
 
 eg.:
 
@@ -150,33 +148,25 @@ eg.:
 await update([
     {id:'id-1', title: 'hello'},
     {id:'id-2', title: 'hello2'},
-], getItems);
-await update({
-    id:'id-1',
-    title: 'hello',
-    content: 'Lorem ipsum dolor sit amet, ac augue malesuada, tellus amet',
-    comments: [],
-}, getItem, 'id-20', { withComment: true });
+]);
 ```
 
 `responses` is the actual cache representing all the asynchrone call, error and response. To access the cache prefer using the `cache` function instead.
 
 ### useAsyncCacheWatch
 
-`useAsyncCacheWatch` hook is used for watching a specific response, allowing to automatically update the state of a component. This hook return the same attributes as `useAsyncCache` plus 3 extra attributes `load`, `response` and `error`.
+`useAsyncCacheWatch` hook is used for watching a specific response, allowing to automatically update the state of a component. This hook return the same attributes as `useAsyncCache` plus 2 extra attributes `response` and `error`.
 
-To use `useAsyncCacheWatch`, you need to provide some parameters, the first given parameter is the function you want to cache. The next parameters are the parameters you would have providen to the function you want to cache. It is actually exactly the same parameters as for `call` function.
+To use `useAsyncCacheWatch`, you need to provide the same parameters as for `useAsyncCache`.
 
 ```tsx
 import { useAsyncCacheWatch } from 'react-async-cache';
 
 export const MyComponent = () => {
-    const { load, response, error } = useAsyncCacheWatch(getItem, 'id-20', { withComment: true });
+    const { call, response, error } = useAsyncCacheWatch(getItem, 'id-20', { withComment: true });
     ...
 }
 ```
-
-`load` is the function to call to run the function you want to cache.
 
 `response` is the response received after the function has been called.
 
@@ -187,27 +177,24 @@ export const MyComponent = () => {
 `useAsyncCacheEffect` combine `useAsyncCacheWatch` with `React.useEffect`. The following code is very recurrent:
 
 ```js
-    const { load, response } = useAsyncCacheWatch(someAsyncFunc, someParams);
+    const { call, response } = useAsyncCacheWatch(someAsyncFunc, someParams);
     React.useEffect(() => {
-        load();
+        call();
     });
 ```
 
 Therefor `react-async-cache` provide `useAsyncCacheEffect` to simplify it to:
 
 ```js
-    const { response, load } = useAsyncCacheEffect(someAsyncFunc, someParams);
+    const { response, call } = useAsyncCacheEffect(someAsyncFunc, someParams);
     // or
-    const { response, load } = useAsyncCacheEffect([], someAsyncFunc, someParams); // where [] is the deps from React.useEffect
+    const { response, call } = useAsyncCacheEffect([], someAsyncFunc, someParams); // where [] is the deps from React.useEffect
 ```
 `useAsyncCacheEffect` get the same parameters as `call` function from `useAsyncCache`.
 
 The first given parameter is the function you want to cache. The next parameters are the parameters you would have providen to the function you want to cache.
 
 You can also provide the deps from `React.useEffect` as first parameters, then come the others params.
-
-It will return the same properties as `useAsyncCache` plus the `load` function.
-
 
 ## Use with isomor
 

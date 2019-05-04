@@ -1,5 +1,5 @@
 <template>
-  <div class="counter">
+  <div>
     <!-- <p>store {{store}}</p> -->
     <p class="error"><b>Some error handling example:</b> {{error}} </p>
   </div>
@@ -27,7 +27,7 @@ export default class ErrorExample extends Vue {
   //   };
   // }
 
-  async mounted() {
+  mounted() {
     this.cacheWatch.load();
   }
 }

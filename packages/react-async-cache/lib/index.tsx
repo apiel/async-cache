@@ -69,32 +69,47 @@ export class AsyncCacheProvider extends React.Component<Props> {
 export interface UseAsyncCacheReturn<T = any> {
     call: Call;
     update: Update;
-    cache: Cache;
+    cache: Cache<T>;
 };
 
-export function useAsyncCache<T = any>(): UseAsyncCacheReturn<T> & { responses: Responses } {
-    return useContext(AsyncCacheContext);
+export interface UseAsyncCacheReturnBound<T = any> {
+    call: () => Promise<string>;
+    update: (response: any) => Promise<void>;
+    cache: () => T;
+};
+
+export function useAsyncCache<T = any>(fn: Fn, ...args: any): UseAsyncCacheReturnBound<T> & { responses: Responses };
+export function useAsyncCache<T = any>(): UseAsyncCacheReturn<T> & { responses: Responses };
+export function useAsyncCache<T = any>(fn?: Fn, ...args: any): (UseAsyncCacheReturn<T> | UseAsyncCacheReturnBound<T>) & { responses: Responses } {
+    const asyncCache = useContext(AsyncCacheContext);
+    const { call, update, cache, ...rest } = asyncCache;
+    return fn ? {
+        call: () => call(fn, ...args),
+        cache: () => cache(fn, ...args),
+        update: (response: any) => update(response, fn, ...args),
+        ...rest,
+    } : asyncCache;
 }
 
-export interface UseAsyncCacheWatchReturn<T = any> extends UseAsyncCacheReturn<T> {
-    load: () => Promise<string>;
+export interface UseAsyncCacheWatchReturn<T = any> {
+    call: () => Promise<string>;
+    update: (response: any) => Promise<void>;
+    cache: () => T;
     response: T;
     error: any;
 };
 
 // we need to find a way to rerender only if necessary
 export function useAsyncCacheWatch<T = any>(fn: Fn, ...args: any): UseAsyncCacheWatchReturn<T> {
-    const { call, responses, ...rest } = useAsyncCache<T>();
+    const { responses, ...rest } = useAsyncCache(fn, ...args);
     const [response, setResponse] = useState();
     const [error, setError] = useState();
 
-    const load = async() => { // can make arrow fn
-        return call(fn, ...args);
-    }
     useEffect(() => {
         const id = getId(fn, args);
         const storeResponse: Res = responses[id];
         if (storeResponse) {
+            // use something else than JSON.stringify (should we use immutable instead? After request are as frequent than rendering component, so JSON might be fine as well)
             if (!response || JSON.stringify(response) !== JSON.stringify(storeResponse.response)) {
                 setResponse(storeResponse.response);
             }
@@ -103,7 +118,11 @@ export function useAsyncCacheWatch<T = any>(fn: Fn, ...args: any): UseAsyncCache
             }
         }
     }); // , [responses]
-    return { load, call, response, error, ...rest };
+    return {
+        response,
+        error,
+        ...rest,
+    };
 }
 
 export function useAsyncCacheEffect<T = any>(deps: readonly any[], fn: Fn, ...args: any): UseAsyncCacheWatchReturn<T>;
@@ -111,9 +130,9 @@ export function useAsyncCacheEffect<T = any>(fn: Fn, ...args: any): UseAsyncCach
 export function useAsyncCacheEffect<T = any>(...params: any): UseAsyncCacheWatchReturn<T> {
     let [deps, fn, ...args] = typeof (params[0]) === 'function' ? [[], ...params] : params;
 
-    const { load, ...rest } = useAsyncCacheWatch(fn, ...args);
+    const { call, ...rest } = useAsyncCacheWatch(fn, ...args);
     React.useEffect(() => {
-        load();
+        call();
     }, deps);
-    return { load, ...rest };
+    return { call, ...rest };
 }

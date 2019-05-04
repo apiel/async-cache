@@ -1,4 +1,5 @@
-- implement vue-async-cache
+
+- cache in core if undefined return null or undefined
 
 - unit test, integration test?
 

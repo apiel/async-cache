@@ -7,9 +7,9 @@ const errorStyle = {
 }
 
 export const ErrorExample = () => {
-  const { load, response, error } = useAsyncCacheWatch(api, '/no-route');
+  const { call, response, error } = useAsyncCacheWatch(api, '/no-route');
   React.useEffect(() => {
-      load();
+    call();
   });
   return (
     <div style={errorStyle}>
