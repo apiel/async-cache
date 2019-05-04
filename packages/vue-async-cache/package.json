@@ -1,6 +1,6 @@
 {
   "name": "vue-async-cache",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "author": "Alexandre Piel <alexandre.piel@gmail.com>",
@@ -17,7 +17,7 @@
     "lint": "tslint -p tsconfig.json -c tslint.json"
   },
   "dependencies": {
-    "core-async-cache": "^0.6.0",
+    "core-async-cache": "^0.7.0",
     "md5": "^2.2.1",
     "typescript": "^3.4.1",
     "vue": "^2.6.10"
