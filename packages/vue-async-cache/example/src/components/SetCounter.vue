@@ -19,14 +19,14 @@ export default class SetCounter extends Vue {
   private cacheState!: any;
 
   async increment() {
-      const count = asyncCache.cache(api, '/counter');
+      const count = this.cacheWatch.cache();
       const response = await api('/counter', 'POST', { value: count + 1 });
-      await asyncCache.update(response, api, '/counter');
+      await this.cacheWatch.update(response);
   }
 
   async reset() {
       const response = await api('/counter', 'POST', { value: 1 });
-      await asyncCache.update(response, api, '/counter');
+      await this.cacheWatch.update(response);
   }
 
   get response() {

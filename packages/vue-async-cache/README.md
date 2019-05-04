@@ -53,7 +53,7 @@ export default class Counter extends Vue {
   }
 
   async mounted() {
-    this.cacheWatch.load();
+    this.cacheWatch.call();
   }
 }
 </script>
@@ -109,14 +109,14 @@ export default class SetCounter extends Vue {
   private cacheState!: any;
 
   async increment() {
-      const count = asyncCache.cache(api, '/counter');
+      const count = this.cacheWatch.cache();
       const response = await api('/counter', 'POST', { value: count + 1 });
-      await asyncCache.update(response, api, '/counter');
+      await this.cacheWatch.update(response);
   }
 
   async reset() {
       const response = await api('/counter', 'POST', { value: 1 });
-      await asyncCache.update(response, api, '/counter');
+      await this.cacheWatch.update(response);
   }
 
   get response() {
@@ -174,7 +174,7 @@ await asyncCache.update({
 
 ### useAsyncCacheWatch
 
-`useAsyncCacheWatch` helper is used for watching a specific response, allowing to automatically update the state of a component. This helper return the same attributes as `asyncCache` plus 3 extra attributes `load`, `response` and `error`.
+`useAsyncCacheWatch` helper is used for watching a specific response, allowing to automatically update the state of a component. This helper return the same attributes as `asyncCache` plus 3 extra attributes, `getResponse` and `getError`.
 
 To use `useAsyncCacheWatch`, you need to provide some parameters, the first given parameter is the function you want to cache. The next parameters are the parameters you would have providen to the function you want to cache. It is actually exactly the same parameters as for `asyncCache.call` method.
 
@@ -190,16 +190,20 @@ export default class Counter extends Vue {
   }
 
   async mounted() {
-    this.cacheWatch.load();
+    this.cacheWatch.call();
   }
 }
 ```
 
-`load` is the function to call to run the function you want to cache.
+`call` does the same as `asyncCache.call` but you don't need to provide anymore the parameters.
 
-`response` is the response received after the function has been called.
+`cache` does the same as `asyncCache.cache` but you don't need to provide anymore the parameters.
 
-`error` is the error received if the function called failed.
+`update` does the same as `asyncCache.update` but you need to provide only the first parameter.
+
+`getResponse` retrieve the response received after the function has been called.
+
+`getError` retrieve the error received if the function called failed.
 
 ## Use with isomor
 

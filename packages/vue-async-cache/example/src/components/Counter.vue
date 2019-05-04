@@ -21,7 +21,7 @@ export default class Counter extends Vue {
   }
 
   async mounted() {
-    this.cacheWatch.load();
+    this.cacheWatch.call();
   }
 }
 </script>

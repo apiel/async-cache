@@ -10,6 +10,7 @@
     "url": "https://github.com/apiel/async-cache"
   },
   "scripts": {
+    "build-link": "yarn build && rm -rf example/node_modules/vue-async-cache/dist/* && cp dist/* example/node_modules/vue-async-cache/dist/",
     "prepublishOnly": "yarn build",
     "prebuild": "rm -rf dist/",
     "build": "tsc -p tsconfig.json",

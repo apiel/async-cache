@@ -28,7 +28,7 @@ export default class ErrorExample extends Vue {
   // }
 
   mounted() {
-    this.cacheWatch.load();
+    this.cacheWatch.call();
   }
 }
 </script>

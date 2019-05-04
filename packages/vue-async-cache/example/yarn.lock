@@ -1185,9 +1185,9 @@ copy-webpack-plugin@^4.6.0:
     p-limit "^1.0.0"
     serialize-javascript "^1.4.0"
 
-core-async-cache@^0.4.1:
-  version "0.4.1"
-  resolved "https://registry.yarnpkg.com/core-async-cache/-/core-async-cache-0.4.1.tgz#86f5f946a523680513453c309f6af2f910d0305b"
+core-async-cache@^0.6.0:
+  version "0.6.0"
+  resolved "https://registry.yarnpkg.com/core-async-cache/-/core-async-cache-0.6.0.tgz#64a1dfd13fbdb01ec16bd56ea8cc201d8803ba1c"
   dependencies:
     md5 "^2.2.1"
     typescript "^3.4.1"
@@ -5409,11 +5409,11 @@ vm-browserify@0.0.4:
   dependencies:
     indexof "0.0.1"
 
-vue-async-cache@^0.4.1:
-  version "0.4.1"
-  resolved "https://registry.yarnpkg.com/vue-async-cache/-/vue-async-cache-0.4.1.tgz#09efcd94baa4cb64e599c196deebb4f9c5c4c3a9"
+vue-async-cache@^0.6.0:
+  version "0.6.0"
+  resolved "https://registry.yarnpkg.com/vue-async-cache/-/vue-async-cache-0.6.0.tgz#4c8577c44b14609c37599346c918d0a215cccb4b"
   dependencies:
-    core-async-cache "^0.4.1"
+    core-async-cache "^0.6.0"
     md5 "^2.2.1"
     typescript "^3.4.1"
     vue "^2.6.10"
