@@ -25,5 +25,6 @@
   "devDependencies": {
     "@types/md5": "^2.1.33",
     "rimraf": "^2.6.3"
-  }
+  },
+  "gitHead": "5a9a262f00383a5bc7f31f4f69580a93173aeac8"
 }

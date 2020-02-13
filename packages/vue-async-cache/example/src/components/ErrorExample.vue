@@ -15,7 +15,7 @@ import { asyncCache, useAsyncCacheWatch } from "vue-async-cache";
 
 @Component
 export default class ErrorExample extends Vue {
-  private cacheWatch = useAsyncCacheWatch(api, "/no-route");
+  private cacheWatch = useAsyncCacheWatch(() => api("/no-route"));
 
   get error() {
     return this.cacheWatch.getError();

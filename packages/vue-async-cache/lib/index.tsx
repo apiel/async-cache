@@ -2,10 +2,7 @@ import {
     getId,
     AsyncCache,
     Responses,
-    Call,
     Fn,
-    Update,
-    Cache,
 } from 'core-async-cache';
 
 export {
@@ -25,11 +22,11 @@ export const asyncCache = new AsyncCache(
     },
 );
 
-export function useAsyncCacheWatch(fn: Fn, ...args: any) {
-    const id = getId(fn, args);
-    const call = () => asyncCache.call(fn, ...args);
-    const update = (response: any) => asyncCache.update(response, fn, ...args);
-    const cache = () => asyncCache.cache(fn, ...args);
+export function useAsyncCacheWatch(fn: Fn) {
+    const id = getId(fn);
+    const call = () => asyncCache.call(fn);
+    const update = (response: any) => asyncCache.update(response, fn);
+    const cache = () => asyncCache.cache(fn);
     const getResponse = () => asyncCache.state.responses[id] && asyncCache.state.responses[id].response;
     const getError = () => asyncCache.state.responses[id] && asyncCache.state.responses[id].error;
 

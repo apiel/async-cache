@@ -14,7 +14,7 @@ import { useAsyncCacheWatch } from "vue-async-cache";
 
 @Component
 export default class Counter extends Vue {
-  private cacheWatch = useAsyncCacheWatch(api, "/counter");
+  private cacheWatch = useAsyncCacheWatch(() => api("/counter"));
 
   get count() {
     return this.cacheWatch.getResponse();
