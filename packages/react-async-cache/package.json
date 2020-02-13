@@ -1,6 +1,6 @@
 {
   "name": "react-async-cache",
-  "version": "1.0.0-alpha.0",
+  "version": "1.0.0-alpha.1",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "author": "Alexandre Piel <alexandre.piel@gmail.com>",
@@ -17,7 +17,7 @@
     "lint": "tslint -p tsconfig.json -c tslint.json"
   },
   "dependencies": {
-    "core-async-cache": "^1.0.0-alpha.0",
+    "core-async-cache": "^1.0.0-alpha.1",
     "md5": "^2.2.1",
     "typescript": "^3.4.1"
   },
