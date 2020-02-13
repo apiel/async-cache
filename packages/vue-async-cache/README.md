@@ -52,7 +52,7 @@ export default class Counter extends Vue {
     return this.cacheWatch.getResponse();
   }
 
-  async mounted() {
+  mounted() {
     this.cacheWatch.call();
   }
 }

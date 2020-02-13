@@ -3,9 +3,11 @@ import React from 'react';
 import './App.css';
 import { Counter } from './Counter';
 import { SetCounter } from './SetCounter';
-import { SetCounter2 } from './SetCounter2';
+import { SetCounterGlobal } from './SetCounterGlobal';
 import { ErrorExample } from './ErrorExample';
 import { CounterEffect } from './CounterEffect';
+import { Counter2 } from './Counter2';
+import { SetCounter2 } from './SetCounter2';
 
 const App = () => {
   return (
@@ -19,6 +21,8 @@ const App = () => {
       <Counter />
       <CounterEffect />
       <SetCounter />
+      <SetCounterGlobal />
+      <Counter2 />
       <SetCounter2 />
       <ErrorExample />
     </div>

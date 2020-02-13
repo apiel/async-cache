@@ -26,9 +26,9 @@ const initialState = {
 };
 
 export const AsyncCacheContext = createContext({
-    call: async (fn: Fn, ...args: any) => '',
-    update: async (response: any, fn: Fn, ...args: any) => { },
-    cache: (fn: Fn, ...args: any): any => { },
+    call: async (fn: Fn) => '',
+    update: async (response: any, fn: Fn) => { },
+    cache: (fn: Fn): any => { },
     ...initialState,
 });
 
@@ -74,19 +74,19 @@ export interface UseAsyncCacheReturn<T = any> {
 
 export interface UseAsyncCacheReturnBound<T = any> {
     call: () => Promise<string>;
-    update: (response: any) => Promise<void>;
+    update: (response: T) => Promise<void>;
     cache: () => T;
 };
 
-export function useAsyncCache<T = any>(fn: Fn, ...args: any): UseAsyncCacheReturnBound<T> & { responses: Responses };
+export function useAsyncCache<T = any>(fn: Fn): UseAsyncCacheReturnBound<T> & { responses: Responses };
 export function useAsyncCache<T = any>(): UseAsyncCacheReturn<T> & { responses: Responses };
-export function useAsyncCache<T = any>(fn?: Fn, ...args: any): (UseAsyncCacheReturn<T> | UseAsyncCacheReturnBound<T>) & { responses: Responses } {
+export function useAsyncCache<T = any>(fn?: Fn): (UseAsyncCacheReturn<T> | UseAsyncCacheReturnBound<T>) & { responses: Responses } {
     const asyncCache = useContext(AsyncCacheContext);
     const { call, update, cache, ...rest } = asyncCache;
     return fn ? {
-        call: () => call(fn, ...args),
-        cache: () => cache(fn, ...args),
-        update: (response: any) => update(response, fn, ...args),
+        call: () => call(fn),
+        cache: () => cache(fn),
+        update: (response: any) => update(response, fn),
         ...rest,
     } : asyncCache;
 }
@@ -100,13 +100,13 @@ export interface UseAsyncCacheWatchReturn<T = any> {
 };
 
 // we need to find a way to rerender only if necessary
-export function useAsyncCacheWatch<T = any>(fn: Fn, ...args: any): UseAsyncCacheWatchReturn<T> {
-    const { responses, ...rest } = useAsyncCache(fn, ...args);
+export function useAsyncCacheWatch<T = any>(fn: Fn): UseAsyncCacheWatchReturn<T> {
+    const { responses, ...rest } = useAsyncCache(fn);
     const [response, setResponse] = useState();
     const [error, setError] = useState();
 
     useEffect(() => {
-        const id = getId(fn, args);
+        const id = getId(fn);
         const storeResponse: Res = responses[id];
         if (storeResponse) {
             // use something else than JSON.stringify (should we use immutable instead? After request are as frequent than rendering component, so JSON might be fine as well)
@@ -125,12 +125,12 @@ export function useAsyncCacheWatch<T = any>(fn: Fn, ...args: any): UseAsyncCache
     };
 }
 
-export function useAsyncCacheEffect<T = any>(deps: readonly any[], fn: Fn, ...args: any): UseAsyncCacheWatchReturn<T>;
-export function useAsyncCacheEffect<T = any>(fn: Fn, ...args: any): UseAsyncCacheWatchReturn<T>;
+export function useAsyncCacheEffect<T = any>(deps: readonly any[], fn: Fn): UseAsyncCacheWatchReturn<T>;
+export function useAsyncCacheEffect<T = any>(fn: Fn): UseAsyncCacheWatchReturn<T>;
 export function useAsyncCacheEffect<T = any>(...params: any): UseAsyncCacheWatchReturn<T> {
-    let [deps, fn, ...args] = typeof (params[0]) === 'function' ? [[], ...params] : params;
+    let [deps, fn] = typeof (params[0]) === 'function' ? [[], ...params] : params;
 
-    const { call, ...rest } = useAsyncCacheWatch(fn, ...args);
+    const { call, ...rest } = useAsyncCacheWatch(fn);
     React.useEffect(() => {
         call();
     }, deps);

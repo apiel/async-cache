@@ -2,8 +2,8 @@ import React from 'react';
 import { useAsyncCacheWatch } from 'react-async-cache';
 import { api } from './mockapi';
 
-export const Counter = () => {
-    const { call, response } = useAsyncCacheWatch(() => api('/counter'));
+export const Counter2 = () => {
+    const { call, response } = useAsyncCacheWatch(() => api('/counter2'));
 
     React.useEffect(() => {
         // call api to get current counter value and cache it
@@ -12,7 +12,7 @@ export const Counter = () => {
     });
     return (
         <div>
-            Counter: { response || 'loading...'}
+            Counter2: { response || 'loading...'}
         </div>
     );
 }

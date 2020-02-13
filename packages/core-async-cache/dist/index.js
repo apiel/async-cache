@@ -33,29 +33,9 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var __read = (this && this.__read) || function (o, n) {
-    var m = typeof Symbol === "function" && o[Symbol.iterator];
-    if (!m) return o;
-    var i = m.call(o), r, ar = [], e;
-    try {
-        while ((n === void 0 || n-- > 0) && !(r = i.next()).done) ar.push(r.value);
-    }
-    catch (error) { e = { error: error }; }
-    finally {
-        try {
-            if (r && !r.done && (m = i["return"])) m.call(i);
-        }
-        finally { if (e) throw e.error; }
-    }
-    return ar;
-};
-var __spread = (this && this.__spread) || function () {
-    for (var ar = [], i = 0; i < arguments.length; i++) ar = ar.concat(__read(arguments[i]));
-    return ar;
-};
 import md5 from 'md5';
-export function getId(fn, args) {
-    return md5(fn.name + "::" + JSON.stringify(args));
+export function getId(fn) {
+    return md5(fn.toString());
 }
 var AsyncCache = /** @class */ (function () {
     function AsyncCache(updateState) {
@@ -64,75 +44,59 @@ var AsyncCache = /** @class */ (function () {
         this.state = {
             responses: {},
         };
-        this.call = function (fn) {
-            var args = [];
-            for (var _i = 1; _i < arguments.length; _i++) {
-                args[_i - 1] = arguments[_i];
-            }
-            return __awaiter(_this, void 0, void 0, function () {
-                var id, requestTime, response, error_1;
-                return __generator(this, function (_a) {
-                    switch (_a.label) {
-                        case 0:
-                            id = getId(fn, args);
-                            if (!!this.isAlreadyRequesting(id)) return [3 /*break*/, 6];
-                            return [4 /*yield*/, this.setRequestTime(id, fn, args)];
-                        case 1:
-                            requestTime = _a.sent();
-                            _a.label = 2;
-                        case 2:
-                            _a.trys.push([2, 5, , 6]);
-                            return [4 /*yield*/, fn.apply(void 0, __spread(args))];
-                        case 3:
-                            response = _a.sent();
-                            return [4 /*yield*/, this.setResponse(id, fn, args, requestTime, response, null)];
-                        case 4:
-                            _a.sent();
-                            return [3 /*break*/, 6];
-                        case 5:
-                            error_1 = _a.sent();
-                            this.setError(id, fn, args, error_1.toString());
-                            return [3 /*break*/, 6];
-                        case 6: return [2 /*return*/, id];
-                    }
-                });
+        this.call = function (fn) { return __awaiter(_this, void 0, void 0, function () {
+            var id, requestTime, response, error_1;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        id = getId(fn);
+                        if (!!this.isAlreadyRequesting(id)) return [3 /*break*/, 6];
+                        return [4 /*yield*/, this.setRequestTime(id, fn)];
+                    case 1:
+                        requestTime = _a.sent();
+                        _a.label = 2;
+                    case 2:
+                        _a.trys.push([2, 5, , 6]);
+                        return [4 /*yield*/, fn()];
+                    case 3:
+                        response = _a.sent();
+                        return [4 /*yield*/, this.setResponse(id, fn, requestTime, response, null)];
+                    case 4:
+                        _a.sent();
+                        return [3 /*break*/, 6];
+                    case 5:
+                        error_1 = _a.sent();
+                        this.setError(id, fn, error_1.toString());
+                        return [3 /*break*/, 6];
+                    case 6: return [2 /*return*/, id];
+                }
             });
-        };
-        this.update = function (response, fn) {
-            var args = [];
-            for (var _i = 2; _i < arguments.length; _i++) {
-                args[_i - 2] = arguments[_i];
-            }
-            return __awaiter(_this, void 0, void 0, function () {
-                var id;
-                return __generator(this, function (_a) {
-                    switch (_a.label) {
-                        case 0:
-                            id = getId(fn, args);
-                            return [4 /*yield*/, this.setResponse(id, fn, args, Date.now(), response, null)];
-                        case 1:
-                            _a.sent();
-                            return [2 /*return*/];
-                    }
-                });
+        }); };
+        this.update = function (response, fn) { return __awaiter(_this, void 0, void 0, function () {
+            var id;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        id = getId(fn);
+                        return [4 /*yield*/, this.setResponse(id, fn, Date.now(), response, null)];
+                    case 1:
+                        _a.sent();
+                        return [2 /*return*/];
+                }
             });
-        };
+        }); };
         this.cache = function (fn) {
-            var args = [];
-            for (var _i = 1; _i < arguments.length; _i++) {
-                args[_i - 1] = arguments[_i];
-            }
-            var id = getId(fn, args);
+            var id = getId(fn);
             return _this.state.responses[id] && _this.state.responses[id].response;
         };
-        this.setResponse = function (id, fn, args, requestTime, response, error) {
+        this.setResponse = function (id, fn, requestTime, response, error) {
             var name = fn.name;
             var responses = _this.state.responses;
-            responses[id] = { name: name, args: args, response: response, requestTime: requestTime, error: error };
+            responses[id] = { name: name, response: response, requestTime: requestTime, error: error };
             // console.log('setResponse', id, responses[id]);
             return _this.updateState(responses, _this);
         };
-        this.setRequestTime = function (id, fn, args) { return __awaiter(_this, void 0, void 0, function () {
+        this.setRequestTime = function (id, fn) { return __awaiter(_this, void 0, void 0, function () {
             var requestTime, data, response;
             return __generator(this, function (_a) {
                 switch (_a.label) {
@@ -140,21 +104,21 @@ var AsyncCache = /** @class */ (function () {
                         requestTime = Date.now();
                         data = this.state.responses[id];
                         response = data ? data.response : null;
-                        return [4 /*yield*/, this.setResponse(id, fn, args, requestTime, response, null)];
+                        return [4 /*yield*/, this.setResponse(id, fn, requestTime, response, null)];
                     case 1:
                         _a.sent();
                         return [2 /*return*/, requestTime];
                 }
             });
         }); };
-        this.setError = function (id, fn, args, error) { return __awaiter(_this, void 0, void 0, function () {
+        this.setError = function (id, fn, error) { return __awaiter(_this, void 0, void 0, function () {
             var data, response;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         data = this.state.responses[id];
                         response = data ? data.response : null;
-                        return [4 /*yield*/, this.setResponse(id, fn, args, data.requestTime, response, error)];
+                        return [4 /*yield*/, this.setResponse(id, fn, data.requestTime, response, error)];
                     case 1:
                         _a.sent();
                         return [2 /*return*/];
@@ -169,4 +133,4 @@ var AsyncCache = /** @class */ (function () {
     return AsyncCache;
 }());
 export { AsyncCache };
-//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiaW5kZXguanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyIuLi9saWIvaW5kZXgudHN4Il0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiI7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7QUFBQSxPQUFPLEdBQUcsTUFBTSxLQUFLLENBQUM7QUE2QnRCLE1BQU0sVUFBVSxLQUFLLENBQUMsRUFBTSxFQUFFLElBQVM7SUFDbkMsT0FBTyxHQUFHLENBQUksRUFBRSxDQUFDLElBQUksVUFBSyxJQUFJLENBQUMsU0FBUyxDQUFDLElBQUksQ0FBRyxDQUFDLENBQUM7QUFDdEQsQ0FBQztBQUVEO0lBS0ksb0JBQ1ksV0FBbUU7UUFEL0UsaUJBRUk7UUFEUSxnQkFBVyxHQUFYLFdBQVcsQ0FBd0Q7UUFMeEUsVUFBSyxHQUE2QjtZQUNyQyxTQUFTLEVBQUUsRUFBRTtTQUNoQixDQUFDO1FBTUssU0FBSSxHQUFTLFVBQU8sRUFBTTtZQUFFLGNBQVk7aUJBQVosVUFBWSxFQUFaLHFCQUFZLEVBQVosSUFBWTtnQkFBWiw2QkFBWTs7Ozs7Ozs0QkFDckMsRUFBRSxHQUFHLEtBQUssQ0FBQyxFQUFFLEVBQUUsSUFBSSxDQUFDLENBQUM7aUNBQ3ZCLENBQUMsSUFBSSxDQUFDLG1CQUFtQixDQUFDLEVBQUUsQ0FBQyxFQUE3Qix3QkFBNkI7NEJBQ1QscUJBQU0sSUFBSSxDQUFDLGNBQWMsQ0FBQyxFQUFFLEVBQUUsRUFBRSxFQUFFLElBQUksQ0FBQyxFQUFBOzs0QkFBckQsV0FBVyxHQUFHLFNBQXVDOzs7OzRCQUV0QyxxQkFBTSxFQUFFLHdCQUFJLElBQUksSUFBQzs7NEJBQTVCLFFBQVEsR0FBRyxTQUFpQjs0QkFDbEMscUJBQU0sSUFBSSxDQUFDLFdBQVcsQ0FBQyxFQUFFLEVBQUUsRUFBRSxFQUFFLElBQUksRUFBRSxXQUFXLEVBQUUsUUFBUSxFQUFFLElBQUksQ0FBQyxFQUFBOzs0QkFBakUsU0FBaUUsQ0FBQzs7Ozs0QkFF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
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiaW5kZXguanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyIuLi9saWIvaW5kZXgudHN4Il0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiI7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7O0FBQUEsT0FBTyxHQUFHLE1BQU0sS0FBSyxDQUFDO0FBNEJ0QixNQUFNLFVBQVUsS0FBSyxDQUFDLEVBQU07SUFDeEIsT0FBTyxHQUFHLENBQUMsRUFBRSxDQUFDLFFBQVEsRUFBRSxDQUFDLENBQUM7QUFDOUIsQ0FBQztBQUVEO0lBS0ksb0JBQ1ksV0FBbUU7UUFEL0UsaUJBRUs7UUFETyxnQkFBVyxHQUFYLFdBQVcsQ0FBd0Q7UUFMeEUsVUFBSyxHQUE2QjtZQUNyQyxTQUFTLEVBQUUsRUFBRTtTQUNoQixDQUFDO1FBTUssU0FBSSxHQUFTLFVBQU8sRUFBTTs7Ozs7d0JBQ3ZCLEVBQUUsR0FBRyxLQUFLLENBQUMsRUFBRSxDQUFDLENBQUM7NkJBQ2pCLENBQUMsSUFBSSxDQUFDLG1CQUFtQixDQUFDLEVBQUUsQ0FBQyxFQUE3Qix3QkFBNkI7d0JBQ1QscUJBQU0sSUFBSSxDQUFDLGNBQWMsQ0FBQyxFQUFFLEVBQUUsRUFBRSxDQUFDLEVBQUE7O3dCQUEvQyxXQUFXLEdBQUcsU0FBaUM7Ozs7d0JBRWhDLHFCQUFNLEVBQUUsRUFBRSxFQUFBOzt3QkFBckIsUUFBUSxHQUFHLFNBQVU7d0JBQzNCLHFCQUFNLElBQUksQ0FBQyxXQUFXLENBQUMsRUFBRSxFQUFFLEVBQUUsRUFBRSxXQUFXLEVBQUUsUUFBUSxFQUFFLElBQUksQ0FBQyxFQUFBOzt3QkFBM0QsU0FBMkQsQ0FBQzs7Ozt3QkFFNUQsSUFBSSxDQUFDLFFBQVEsQ0FBQyxFQUFFLEVBQUUsRUFBRSxFQUFFLE9BQUssQ0FBQyxRQUFRLEVBQUUsQ0FBQyxDQUFDOzs0QkFHaEQsc0JBQU8sRUFBRSxFQUFDOzs7YUFDYixDQUFBO1FBRU0sV0FBTSxHQUFXLFVBQU8sUUFBYSxFQUFFLEVBQU07Ozs7O3dCQUMx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

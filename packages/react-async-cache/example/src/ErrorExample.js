@@ -7,7 +7,7 @@ const errorStyle = {
 }
 
 export const ErrorExample = () => {
-  const { call, response, error } = useAsyncCacheWatch(api, '/no-route');
+  const { call, response, error } = useAsyncCacheWatch(() => api('/no-route'));
   React.useEffect(() => {
     call();
   });

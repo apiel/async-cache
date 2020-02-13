@@ -3,9 +3,9 @@ import { AsyncCache, Responses, Call, Fn, Update, Cache } from 'core-async-cache
 export { getId, AsyncCache, Responses, Res, Call, Fn, Update, Cache, } from 'core-async-cache';
 export declare const AsyncCacheContext: React.Context<{
     responses: Responses;
-    call: (fn: Fn, ...args: any) => Promise<string>;
-    update: (response: any, fn: Fn, ...args: any) => Promise<void>;
-    cache: (fn: Fn, ...args: any) => any;
+    call: (fn: Fn) => Promise<string>;
+    update: (response: any, fn: Fn) => Promise<void>;
+    cache: (fn: Fn) => any;
 }>;
 interface Props {
     children: React.ReactNode;
@@ -25,10 +25,10 @@ export interface UseAsyncCacheReturn<T = any> {
 }
 export interface UseAsyncCacheReturnBound<T = any> {
     call: () => Promise<string>;
-    update: (response: any) => Promise<void>;
+    update: (response: T) => Promise<void>;
     cache: () => T;
 }
-export declare function useAsyncCache<T = any>(fn: Fn, ...args: any): UseAsyncCacheReturnBound<T> & {
+export declare function useAsyncCache<T = any>(fn: Fn): UseAsyncCacheReturnBound<T> & {
     responses: Responses;
 };
 export declare function useAsyncCache<T = any>(): UseAsyncCacheReturn<T> & {
@@ -41,6 +41,6 @@ export interface UseAsyncCacheWatchReturn<T = any> {
     response: T;
     error: any;
 }
-export declare function useAsyncCacheWatch<T = any>(fn: Fn, ...args: any): UseAsyncCacheWatchReturn<T>;
-export declare function useAsyncCacheEffect<T = any>(deps: readonly any[], fn: Fn, ...args: any): UseAsyncCacheWatchReturn<T>;
-export declare function useAsyncCacheEffect<T = any>(fn: Fn, ...args: any): UseAsyncCacheWatchReturn<T>;
+export declare function useAsyncCacheWatch<T = any>(fn: Fn): UseAsyncCacheWatchReturn<T>;
+export declare function useAsyncCacheEffect<T = any>(deps: readonly any[], fn: Fn): UseAsyncCacheWatchReturn<T>;
+export declare function useAsyncCacheEffect<T = any>(fn: Fn): UseAsyncCacheWatchReturn<T>;
