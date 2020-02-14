@@ -92,6 +92,7 @@ export function useAsyncCache<T = any>(fn?: Fn): (UseAsyncCacheReturn<T> | UseAs
 }
 
 export interface UseAsyncCacheWatchReturn<T = any> {
+    responses: Responses;
     call: () => Promise<string>;
     update: (response: any) => Promise<void>;
     cache: () => T;
@@ -119,6 +120,7 @@ export function useAsyncCacheWatch<T = any>(fn: Fn): UseAsyncCacheWatchReturn<T>
         }
     }); // , [responses]
     return {
+        responses,
         response,
         error,
         ...rest,
