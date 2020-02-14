@@ -1,7 +1,7 @@
 # vue-async-cache
 
 `vue-async-cache` is a library to cache asynchrone function call between different component.
-It was initially build to improve cache of api call while using [isomor](https://github.com/apiel/isomor) with VueJs. This library can be especially useful to cache some fetch query, for example using axios. The concept was inspired from Apollo cache, even if it is far from being comparable.
+It was initially build to improve cache of api call. This library can be especially useful to cache some fetch query, for example using axios. The concept was inspired from Apollo cache, even if it is far from being comparable.
 
 The library take care to save the response of the async function and share it between components using context api. It will also avoid unnecessary call made simultaneously to the same async function. It will identify the cache id base on the name of the function and the parameters passed. So if you call multiple times the same function with different parameters, it will not use the same cache. Example:
 
@@ -11,14 +11,14 @@ export api = async (param1, param2) => ...
 ```
 
 ```js
-  call(api, '/counter');
-  call(api, '/timer');
+  call(() => api('/counter'));
+  call(() => api('/timer'));
 ```
 This 2 call to `api` function will have different cache because they don't share the same parameters.
 
 ```js
-  call(api, '/counter');
-  call(api, '/counter');
+  call(() => api('/counter'));
+  call(() => api('/counter'));
 ```
 This 2 call to `api` function will have the same cache and `api` will be called only once.
 
@@ -46,7 +46,7 @@ import { useAsyncCacheWatch } from "vue-async-cache";
 
 @Component
 export default class Counter extends Vue {
-  private cacheWatch = useAsyncCacheWatch(api, "/counter");
+  private cacheWatch = useAsyncCacheWatch(() => api("/counter"));
 
   get count() {
     return this.cacheWatch.getResponse();
@@ -105,7 +105,7 @@ import { asyncCache, useAsyncCacheWatch } from "vue-async-cache";
 
 @Component
 export default class SetCounter extends Vue {
-  private cacheWatch = useAsyncCacheWatch(api, "/counter");
+  private cacheWatch = useAsyncCacheWatch(() => api("/counter"));
   private cacheState!: any;
 
   async increment() {
@@ -141,13 +141,13 @@ import { asyncCache } from "vue-async-cache";
 `asyncCache.call` is a method that allow to cache the original function call. The first given parameter to `call` is the function you want to cache. The next parameters are the parameters you would have providen to the function you want to cache. `call` will return the `id` of the corresponding response in the cache.
 
 ```tsx
-async asyncCache.call(fn: (...args: any) => Promise<any>, ...args: any) => Promise<string>
+async asyncCache.call(fn: (...args: any) => Promise<any>) => Promise<string>
 ```
 
 eg.:
 ```tsx
-await asyncCache.call(getItems);
-const id = await asyncCache.call(getItem, 'id-20', { withComment: true });
+await asyncCache.call(() => getItems());
+const id = await asyncCache.call(() => getItem('id-20', { withComment: true }));
 ```
 > **Note:** in most of the case it is not necessary to use `call` and instead prefer using `load` from `useAsyncCacheWatch` that will take care to observe changes on the response.
 
@@ -161,13 +161,13 @@ eg.:
 await asyncCache.update([
     {id:'id-1', title: 'hello'},
     {id:'id-2', title: 'hello2'},
-], getItems);
+], () => getItems());
 await asyncCache.update({
     id:'id-1',
     title: 'hello',
     content: 'Lorem ipsum dolor sit amet, ac augue malesuada, tellus amet',
     comments: [],
-}, getItem, 'id-20', { withComment: true });
+}, () => getItem('id-20', { withComment: true }));
 ```
 
 `asyncCache.responses` property is the actual cache representing all the asynchrone call, error and response. To access the cache prefer using the `cache` function instead.
@@ -176,14 +176,14 @@ await asyncCache.update({
 
 `useAsyncCacheWatch` helper is used for watching a specific response, allowing to automatically update the state of a component. This helper return the same attributes as `asyncCache` plus 3 extra attributes, `getResponse` and `getError`.
 
-To use `useAsyncCacheWatch`, you need to provide some parameters, the first given parameter is the function you want to cache. The next parameters are the parameters you would have providen to the function you want to cache. It is actually exactly the same parameters as for `asyncCache.call` method.
+To use `useAsyncCacheWatch`, you need to provide some parameters, the first given parameter is the function you want to cache.
 
 ```tsx
 import { useAsyncCacheWatch } from "vue-async-cache";
 
 @Component
 export default class Counter extends Vue {
-  private cacheWatch = useAsyncCacheWatch(api, "/counter");
+  private cacheWatch = useAsyncCacheWatch(() => api("/counter"));
 
   get count() {
     return this.cacheWatch.getResponse();
@@ -204,7 +204,3 @@ export default class Counter extends Vue {
 `getResponse` retrieve the response received after the function has been called.
 
 `getError` retrieve the error received if the function called failed.
-
-## Use with isomor
-
-https://apiel.github.io/isomor/#/?id=vue-async-cache

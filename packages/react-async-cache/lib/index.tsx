@@ -125,11 +125,10 @@ export function useAsyncCacheWatch<T = any>(fn: Fn): UseAsyncCacheWatchReturn<T>
     };
 }
 
-export function useAsyncCacheEffect<T = any>(deps: readonly any[], fn: Fn): UseAsyncCacheWatchReturn<T>;
-export function useAsyncCacheEffect<T = any>(fn: Fn): UseAsyncCacheWatchReturn<T>;
-export function useAsyncCacheEffect<T = any>(...params: any): UseAsyncCacheWatchReturn<T> {
-    let [deps, fn] = typeof (params[0]) === 'function' ? [[], ...params] : params;
-
+export function useAsyncCacheEffect<T = any>(
+    fn: Fn,
+    deps: any[] = [],
+): UseAsyncCacheWatchReturn<T> {
     const { call, ...rest } = useAsyncCacheWatch(fn);
     React.useEffect(() => {
         call();
