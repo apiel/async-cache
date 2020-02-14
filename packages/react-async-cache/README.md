@@ -1,7 +1,7 @@
 # react-async-cache
 
 `react-async-cache` is a library to cache asynchrone function call between different component.
-It was initially build to improve cache of api call while using [isomor](https://github.com/apiel/isomor) with react. This library can be especially useful to cache some fetch query, for example using axios. The concept was inspired from Apollo cache, even if it is far from being comparable.
+It was initially build to improve cache of api call with react. This library can be especially useful to cache some fetch query, for example using axios. The concept was inspired from Apollo cache, even if it is far from being comparable.
 
 The library take care to save the response of the async function and share it between components using context api. It will also avoid unnecessary call made simultaneously to the same async function. It will identify the cache id base on the name of the function and the parameters passed. So if you call multiple times the same function with different parameters, it will not use the same cache. Example:
 
@@ -195,7 +195,3 @@ Therefor `react-async-cache` provide `useAsyncCacheEffect` to simplify it to:
 The first given parameter is the function you want to cache. The next parameters are the parameters you would have providen to the function you want to cache.
 
 You can also provide the deps from `React.useEffect` as first parameters, then come the others params.
-
-## Use with isomor
-
-https://apiel.github.io/isomor/#/?id=react-async-cache

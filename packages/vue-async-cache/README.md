@@ -1,7 +1,7 @@
 # vue-async-cache
 
 `vue-async-cache` is a library to cache asynchrone function call between different component.
-It was initially build to improve cache of api call while using [isomor](https://github.com/apiel/isomor) with VueJs. This library can be especially useful to cache some fetch query, for example using axios. The concept was inspired from Apollo cache, even if it is far from being comparable.
+It was initially build to improve cache of api call with VueJs. This library can be especially useful to cache some fetch query, for example using axios. The concept was inspired from Apollo cache, even if it is far from being comparable.
 
 The library take care to save the response of the async function and share it between components using context api. It will also avoid unnecessary call made simultaneously to the same async function. It will identify the cache id base on the name of the function and the parameters passed. So if you call multiple times the same function with different parameters, it will not use the same cache. Example:
 
@@ -204,7 +204,3 @@ export default class Counter extends Vue {
 `getResponse` retrieve the response received after the function has been called.
 
 `getError` retrieve the error received if the function called failed.
-
-## Use with isomor
-
-https://apiel.github.io/isomor/#/?id=vue-async-cache
