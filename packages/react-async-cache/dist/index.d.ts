@@ -42,5 +42,4 @@ export interface UseAsyncCacheWatchReturn<T = any> {
     error: any;
 }
 export declare function useAsyncCacheWatch<T = any>(fn: Fn): UseAsyncCacheWatchReturn<T>;
-export declare function useAsyncCacheEffect<T = any>(deps: readonly any[], fn: Fn): UseAsyncCacheWatchReturn<T>;
-export declare function useAsyncCacheEffect<T = any>(fn: Fn): UseAsyncCacheWatchReturn<T>;
+export declare function useAsyncCacheEffect<T = any>(fn: Fn, deps?: any[]): UseAsyncCacheWatchReturn<T>;
