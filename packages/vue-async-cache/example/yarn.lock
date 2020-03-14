@@ -346,8 +346,8 @@ acorn-walk@^6.1.1:
   resolved "https://registry.yarnpkg.com/acorn-walk/-/acorn-walk-6.1.1.tgz#d363b66f5fac5f018ff9c3a1e7b6f8e310cc3913"
 
 acorn@^5.0.0, acorn@^5.6.2:
-  version "5.7.3"
-  resolved "https://registry.yarnpkg.com/acorn/-/acorn-5.7.3.tgz#67aa231bf8812974b85235a96771eb6bd07ea279"
+  version "5.7.4"
+  resolved "https://registry.yarnpkg.com/acorn/-/acorn-5.7.4.tgz#3e8d8a9947d0599a1796d10225d7432f4a4acf5e"
 
 acorn@^6.0.7, acorn@^6.1.1:
   version "6.1.1"
@@ -1185,9 +1185,9 @@ copy-webpack-plugin@^4.6.0:
     p-limit "^1.0.0"
     serialize-javascript "^1.4.0"
 
-core-async-cache@^0.6.0:
-  version "0.6.0"
-  resolved "https://registry.yarnpkg.com/core-async-cache/-/core-async-cache-0.6.0.tgz#64a1dfd13fbdb01ec16bd56ea8cc201d8803ba1c"
+core-async-cache@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/core-async-cache/-/core-async-cache-1.1.0.tgz#d7cb9cbdb71d766975689cde0805249a0e1d8b34"
   dependencies:
     md5 "^2.2.1"
     typescript "^3.4.1"
@@ -5409,11 +5409,11 @@ vm-browserify@0.0.4:
   dependencies:
     indexof "0.0.1"
 
-vue-async-cache@^0.6.0:
-  version "0.6.0"
-  resolved "https://registry.yarnpkg.com/vue-async-cache/-/vue-async-cache-0.6.0.tgz#4c8577c44b14609c37599346c918d0a215cccb4b"
+vue-async-cache@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/vue-async-cache/-/vue-async-cache-1.1.0.tgz#ca2d947cc6b9fbc3b3c4371c627b18c817c02e43"
   dependencies:
-    core-async-cache "^0.6.0"
+    core-async-cache "^1.1.0"
     md5 "^2.2.1"
     typescript "^3.4.1"
     vue "^2.6.10"
