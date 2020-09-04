@@ -1185,9 +1185,9 @@ copy-webpack-plugin@^4.6.0:
     p-limit "^1.0.0"
     serialize-javascript "^1.4.0"
 
-core-async-cache@^0.6.0:
-  version "0.6.0"
-  resolved "https://registry.yarnpkg.com/core-async-cache/-/core-async-cache-0.6.0.tgz#64a1dfd13fbdb01ec16bd56ea8cc201d8803ba1c"
+core-async-cache@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/core-async-cache/-/core-async-cache-1.1.0.tgz#d7cb9cbdb71d766975689cde0805249a0e1d8b34"
   dependencies:
     md5 "^2.2.1"
     typescript "^3.4.1"
@@ -3029,8 +3029,8 @@ locate-path@^3.0.0:
     path-exists "^3.0.0"
 
 lodash.defaultsdeep@^4.6.0:
-  version "4.6.0"
-  resolved "https://registry.yarnpkg.com/lodash.defaultsdeep/-/lodash.defaultsdeep-4.6.0.tgz#bec1024f85b1bd96cbea405b23c14ad6443a6f81"
+  version "4.6.1"
+  resolved "https://registry.yarnpkg.com/lodash.defaultsdeep/-/lodash.defaultsdeep-4.6.1.tgz#512e9bd721d272d94e3d3a63653fa17516741ca6"
 
 lodash.mapvalues@^4.6.0:
   version "4.6.0"
@@ -5409,11 +5409,11 @@ vm-browserify@0.0.4:
   dependencies:
     indexof "0.0.1"
 
-vue-async-cache@^0.6.0:
-  version "0.6.0"
-  resolved "https://registry.yarnpkg.com/vue-async-cache/-/vue-async-cache-0.6.0.tgz#4c8577c44b14609c37599346c918d0a215cccb4b"
+vue-async-cache@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/vue-async-cache/-/vue-async-cache-1.1.0.tgz#ca2d947cc6b9fbc3b3c4371c627b18c817c02e43"
   dependencies:
-    core-async-cache "^0.6.0"
+    core-async-cache "^1.1.0"
     md5 "^2.2.1"
     typescript "^3.4.1"
     vue "^2.6.10"
