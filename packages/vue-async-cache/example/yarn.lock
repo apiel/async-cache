@@ -1185,9 +1185,9 @@ copy-webpack-plugin@^4.6.0:
     p-limit "^1.0.0"
     serialize-javascript "^1.4.0"
 
-core-async-cache@^0.6.0:
-  version "0.6.0"
-  resolved "https://registry.yarnpkg.com/core-async-cache/-/core-async-cache-0.6.0.tgz#64a1dfd13fbdb01ec16bd56ea8cc201d8803ba1c"
+core-async-cache@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/core-async-cache/-/core-async-cache-1.1.0.tgz#d7cb9cbdb71d766975689cde0805249a0e1d8b34"
   dependencies:
     md5 "^2.2.1"
     typescript "^3.4.1"
@@ -4286,8 +4286,8 @@ querystring@0.2.0:
   resolved "https://registry.yarnpkg.com/querystring/-/querystring-0.2.0.tgz#b209849203bb25df820da756e747005878521620"
 
 querystringify@^2.1.1:
-  version "2.1.1"
-  resolved "https://registry.yarnpkg.com/querystringify/-/querystringify-2.1.1.tgz#60e5a5fd64a7f8bfa4d2ab2ed6fdf4c85bad154e"
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/querystringify/-/querystringify-2.2.0.tgz#3345941b4153cb9d082d8eee4cda2016a9aef7f6"
 
 randombytes@^2.0.0, randombytes@^2.0.1, randombytes@^2.0.5:
   version "2.1.0"
@@ -5328,8 +5328,8 @@ url-loader@^1.1.2:
     schema-utils "^1.0.0"
 
 url-parse@^1.4.3:
-  version "1.4.7"
-  resolved "https://registry.yarnpkg.com/url-parse/-/url-parse-1.4.7.tgz#a8a83535e8c00a316e403a5db4ac1b9b853ae278"
+  version "1.5.7"
+  resolved "https://registry.yarnpkg.com/url-parse/-/url-parse-1.5.7.tgz#00780f60dbdae90181f51ed85fb24109422c932a"
   dependencies:
     querystringify "^2.1.1"
     requires-port "^1.0.0"
@@ -5409,11 +5409,11 @@ vm-browserify@0.0.4:
   dependencies:
     indexof "0.0.1"
 
-vue-async-cache@^0.6.0:
-  version "0.6.0"
-  resolved "https://registry.yarnpkg.com/vue-async-cache/-/vue-async-cache-0.6.0.tgz#4c8577c44b14609c37599346c918d0a215cccb4b"
+vue-async-cache@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/vue-async-cache/-/vue-async-cache-1.1.0.tgz#ca2d947cc6b9fbc3b3c4371c627b18c817c02e43"
   dependencies:
-    core-async-cache "^0.6.0"
+    core-async-cache "^1.1.0"
     md5 "^2.2.1"
     typescript "^3.4.1"
     vue "^2.6.10"
